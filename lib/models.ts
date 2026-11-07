@@ -84,6 +84,20 @@ export interface QuestionEvaluationItem {
   evaluatorFeedback: string | null;
   evaluatorConfidence: number | null;
   status: "pending" | "evaluated" | "needs_review";
+
+  // Detailed Rubric & Evaluation Breakdown
+  expectedAnswer?: string;
+  deductionReasons?: string[];
+  improvementSuggestions?: string[];
+  needsHumanReview?: boolean;
+  reviewFlags?: string[];
+  stepAssessments?: {
+    step: string;
+    maxMarks: number;
+    awardedMarks: number;
+    met: boolean;
+    feedback: string;
+  }[];
 }
 
 export interface EvaluationRecord {
@@ -100,6 +114,8 @@ export interface EvaluationRecord {
   evaluatedAt: string | null;
   evaluatorId?: string | null;
   source: "pending" | "gemini_vision" | "teacher" | "hybrid";
+  sectionScores?: Record<string, { scored: number; total: number; percentage: number }>;
+  reviewAlerts?: string[];
 }
 
 export interface TeacherReview {

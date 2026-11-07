@@ -2,7 +2,14 @@
   "name": "papercheck-ai",
   "version": "1.0.0",
   "private": true,
-  "scripts": { "dev": "next dev", "build": "next build", "start": "next start", "lint": "tsc --noEmit", "index-papers": "node scripts/index-papers.mjs" },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "tsc --noEmit",
+    "test": "node tests/rubric.test.mjs && npx tsx tests/evaluator.test.mjs",
+    "index-papers": "node scripts/index-papers.mjs"
+  },
   "dependencies": {
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.468.0",

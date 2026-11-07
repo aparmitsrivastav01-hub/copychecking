@@ -1,0 +1,1144 @@
+Series : QR1SP                                                                     SET-4
+                                                                                  - 
+                                                                                  Q.P. Code      91
+ .                                                        -   - 
+Roll No.                                                       -    
+                                                               Candidates must write the Q.P. Code
+       {}                                                      on the title page of the answer-book.
+
+
+         :                                                    NOTE :
+
+(I)           -         (I)     Please check that this question
+        32                                                    paper contains 32 printed pages.
+
+(II)    -        -       (II) Q.P. Code given on the right hand
+           -  -            side of the question paper should
+                                                              be written on the title page of the
+         
+                                                              answer-book by the candidate.
+(III)       -  37          (III) Please check that this question
+                                                               paper contains 37 questions.
+
+(IV)         ,            (IV) Please write down the serial
+        -                      number of the question in the
+                                                              answer-book at the given place
+          
+                                                              before attempting it.
+(V)      -     15            (V)     15 minute time has been allotted
+            -                      to read this question paper. The
+                                                                 question paper will be distributed
+        10.15     10.15   10.30
+                                                                 at 10.15 a.m. From 10.15 a.m. to
+            -                 10.30 a.m., the candidates will
+            -               read the question paper only and
+                                                          will not write any answer on the
+                                                                 answer-book during this period.
+
+
+                                           
+                           COMPUTER SCIENCE
+  : 3                                                                  : 70
+Time allowed : 3 hours                                                        Maximum Marks : 70
+
+91*        2334                                  1 * Page                                       P.T.O.
+  :
+     (i)          -  37   
+     (ii)                           
+                    
+     (iii)        -  5  , , ,        
+     (iv)         -   21  (1  21)       1    
+     (v)          -   7  (22  28)       2    
+     (vi)         -   3  (29  31)       3    
+     (vii)        -   4  (32  35)       4    
+     (viii)       -   2  (36  37)       5    
+     (ix)              Python Language     
+     (x)           (Multiple Choice Questions)       text  
+                   
+
+                                                      –                                 (21  1 = 21)
+
+1.             (true)    (false) :
+            (Python)  74  data type 74.0  data type                                 1
+
+
+2.            (Code Snippet)  output                                           1
+           s = "the Truth"
+           print(s.capitalize())
+           (A) The truth                                   (B) THE TRUTH
+           (C) The Truth                                   (D) the Truth
+
+
+3.          (Python)        True  (evaluate)  ?                1
+           (A)     2>3 and 2<3                             (B)    3>1 and 2
+           (C)     3>1 and 3>2                             (D)    3>1 and 3<2
+
+
+91*                                                  2 * Page
+General Instructions :
+      (i)     This question paper contains 37 questions.
+      (ii)    All questions are compulsory. However, internal choices have been
+              provided in some questions. Attempt only one of the choices in such
+              questions.
+      (iii)   The paper is divided into 5 Sections – A, B, C, D and E.
+      (iv)    Section A consists of 21 questions (1 to 21). Each question carries
+              1 mark.
+      (v)     Section B consists of 7 questions (22 to 28). Each question carries
+              2 marks.
+      (vi)    Section C consists of 3 questions (29 to 31). Each question carries
+              3 marks.
+      (vii) Section D consists of 4 questions (32 to 35). Each question carries
+            4 marks.
+      (viii) Section E consists of 2 questions (36 & 37). Each question carries
+             5 marks.
+      (ix)    All programming questions are to be answered using Python Language
+              only.
+      (x)     In case of MCQs, text of the correct answer should also be written.
+
+                                      SECTION – A                           (21  1 = 21)
+
+
+1.    State True or False :                                                             1
+      In Python, data type of 74 is same as the data type of 74.0.
+
+
+2.    Identify the output of the following code snippet :                               1
+      s = "the Truth"
+      print(s.capitalize())
+      (A) The truth                            (B) THE TRUTH
+      (C) The Truth                            (D) the Truth
+
+
+3.    Which of the following expressions in Python evaluates to True ?                  1
+      (A)     2>3 and 2<3                      (B)   3>1 and 2
+      (C)     3>1 and 3>2                      (D)   3>1 and 3<2
+
+91*                                       3 * Page                                  P.T.O.
+4.        output   ?                                          1
+
+      s='War and Peace by Leo Tolstoy'
+      print(s.partition("by"))
+      (A)   ('War and Peace ', 'by', ' Leo Tolstoy')
+
+      (B)   ['War and Peace ', 'by', ' Leo Tolstoy']
+
+      (C)   ('War and Peace ', ' Leo Tolstoy')
+
+      (D)   ['War and Peace ', ' Leo Tolstoy']
+
+
+5.     statement  output   ?                                         1
+
+      print("PythonProgram"[–1:2:–2])
+
+
+6.        output   ?                                       1
+
+      t = tuple('tuple')
+      t2 = t[2],
+      t += t2
+      print(t)
+      (A)   ('tuple')
+
+      (B)   ('tuple','p')
+
+      (C)   ('t', 'u', 'p', 'l', 'e', 'p')
+
+      (D)   ('t', 'u', 'p', 'l', 'e')
+
+
+7.       (dictionaries)            ?   1
+
+      (A)      (sequence)     
+      (B)       elements   key    
+      (C)       elements   (value)      
+      (D)    element  key  value     
+
+91*                                           4 * Page
+4.    What is the output of the following code snippet ?                             1
+      s='War and Peace by Leo Tolstoy'
+      print(s.partition("by"))
+
+      (A)   ('War and Peace ', 'by', ' Leo Tolstoy')
+
+      (B)   ['War and Peace ', 'by', ' Leo Tolstoy']
+
+      (C)   ('War and Peace ', ' Leo Tolstoy')
+
+      (D)   ['War and Peace ', ' Leo Tolstoy']
+
+
+
+5.    What will be the output of the following statement ?                           1
+      print("PythonProgram"[–1:2:–2])
+
+
+6.    What will be the output of the following code snippet ?                        1
+      t = tuple('tuple')
+      t2 = t[2],
+      t += t2
+      print(t)
+
+      (A)   ('tuple')
+
+      (B)   ('tuple','p')
+
+      (C)   ('t', 'u', 'p', 'l', 'e', 'p')
+
+      (D)   ('t', 'u', 'p', 'l', 'e')
+
+
+
+7.    Which of the following statements is true about dictionaries in Python ?       1
+
+      (A)   A dictionary is an example of sequence datatype.
+
+      (B)   A dictionary cannot have two elements with same key.
+
+      (C)   A dictionary cannot have two elements with same value.
+
+      (D)   The key and value of an element cannot be the same.
+
+
+91*                                     5 * Page                                 P.T.O.
+8.     L   (List) ,  6 elements ,      
+      (statement) exception raise  ?                                                     1
+      (A)   L.pop(1)                             (B) L.pop(6)
+      (C)   L.insert(1,6)                        (D) L.insert(6,1)
+
+
+9.       output   ?                                                    1
+      def f1(a,b=1):
+          print(a+b,end='–')
+      c=f1(1,2)
+      print(c,sep='*')
+      (A)   3–2                                  (B) 3–2*
+      (C)   3–None                               (D) 3*None–
+
+10.      statement    :                                                1
+      f1 = open("pqr.dat","________")
+      Read only mode            mode  ?
+      (A)   a                                    (B) rb
+      (C)   r+                                   (D) rb+
+
+
+11.    statement  (True)    (False),  :                               1
+       (Python) , try……except……finally statement    logical
+      errors  handle     
+
+
+12.    table   candidate keys ,    primary key        
+      table     (alternate keys)  ?                                        1
+      (A)   0                                    (B) 1
+      (C)   2                                    (D) 3
+
+
+13.        SQL    (existing relation)  
+      (degree)    ?                                                                  1
+      (A)   DROP TABLE                           (B) ALTER TABLE
+      (C)   UPDATE…SET                           (D) DELETE
+
+91*                                          6 * Page
+8.    If L is a list with 6 elements, then which of the following statements will
+      raise an exception ?                                                            1
+      (A)   L.pop(1)                        (B) L.pop(6)
+      (C)   L.insert(1,6)                   (D) L.insert(6,1)
+
+
+9.    What will be the output of the following code ?                                 1
+      def f1(a,b=1):
+            print(a+b,end='–')
+      c=f1(1,2)
+      print(c,sep='*')
+      (A)   3–2                             (B) 3–2*
+      (C)   3–None                          (D) 3*None–
+
+10. Consider the statement given below :                                              1
+    f1 = open("pqr.dat","________")
+      Which of the following is the correct file mode to open the file in read only
+      mode ?
+      (A)   a                               (B) rb
+      (C)   r+                              (D) rb+
+
+
+11. State whether the following statement is True or False :                          1
+      In Python, Logical errors can be handled using try……except……finally
+      statement.
+
+
+12. A table has two candidate keys, one of which is chosen as the primary key.
+    How many alternate keys does this table have ?                                    1
+      (A)   0                               (B) 1
+      (C)   2                               (D) 3
+
+
+13. Which of the following SQL command can change the degree of the
+    existing relation ?                                                               1
+      (A)   DROP TABLE                      (B) ALTER TABLE
+      (C)   UPDATE…SET                      (D) DELETE
+
+91*                                     7 * Page                                P.T.O.
+14.    query  output   ?                                                        1
+
+      SELECT MACHINE_ID, MACHINE_NAME FROM INVENTORY
+            WHERE QUANTITY <= 100;
+
+      (A)    (INVENTORY)  (table)      (quantity) 100
+               
+      (B)    (INVENTORY)   100    (quantity)     
+            (ID)  
+      (C)    (INVENTORY)  (table)      (quantity) 100
+             100    
+      (D)    (INVENTORY)   100         
+              (ID)  
+
+15. MySQL     (relation)  2  (tuples)  3 
+      (attributes)    2 Attributes   (delete)    4 tuples  
+          (relation)   (cardinality)   ?                1
+
+      (A)   4                                      (B) 5
+      (C)   6                                      (D) 7
+
+
+16. SQL ,   (table)        (aggregate function)
+         (smallest value)   (return)   ?                        1
+
+      (A)   MIN()                                  (B) MAX()
+
+      (C)   SMALL()                                (D) LOWER()
+
+
+17. Computer Networks   ,      RJ 45      ?    1
+
+      (A)   Radio Jockey 45                         (B)    Registered Jockey 45
+      (C)   Radio Jack 45                           (D)    Registered Jack 45
+
+
+91*                                           8 * Page
+14. What will be the output of the query ?                                          1
+
+      SELECT MACHINE_ID, MACHINE_NAME FROM INVENTORY
+
+            WHERE QUANTITY <= 100;
+
+      (A)   All columns of INVENTORY table with quantity greater than 100
+
+      (B)   ID and name of machines with quantity less than 100 from
+            INVENTORY table
+
+      (C)   All columns of INVENTORY table with quantity greater than or equal
+            to 100
+
+      (D)   ID and name of machines with quantity less than or equal to 100
+            from INVENTORY table.
+
+
+15. A relation in MySQL database consists of 2 tuples and 3 attributes. If 2
+      attributes are deleted and 4 tuples are added, what will be the cardinality
+      of the relation ?                                                             1
+
+      (A)   4                              (B) 5
+
+      (C)   6                              (D) 7
+
+
+16. Which aggregate function in SQL returns the smallest value from a
+      column in a table ?                                                           1
+
+      (A)   MIN()                          (B) MAX()
+
+      (C)   SMALL()                        (D) LOWER()
+
+
+
+17. With respect to computer networks, which of the following is the correct
+      expanded form of RJ 45 ?                                                      1
+
+      (A)   Radio Jockey 45                  (B)   Registered Jockey 45
+
+      (C)   Radio Jack 45                    (D)   Registered Jack 45
+
+
+91*                                    9 * Page                               P.T.O.
+18.       (Network device)    (entry)   (exit) 
+      (point)      ,            (data)
+           (routing paths)         
+       ?                                                                                            1
+
+      (A)     (Modem)                         (B)    (Gateway)
+      (C)     (Switch)                          (D)    (Repeater)
+
+
+19. XML   (full form)   ?                                                                1
+
+
+       . 20  21  (Assertion) (A)   (Reason) (R)    
+              
+      (A)    (A)   (R)      (A)     (R)  
+      (B)    (A)   (R)   ,   (A)     (R)
+              
+      (C)    (A)  ,   (R)   
+      (D)    (A)  ,   (R)   
+
+
+20.    (A)        :   [1,2,3]+'123'                (invalid
+                            expression)                                                            1
+
+       (R)           :      (list)   (string)       
+
+
+21.    (A)        :   SQL   (PRIMARY) KEY  (constraint) 
+                                   value  (unique)  
+                            NULL                                                                 1
+
+       (R)           :    (Candidate) keys  (Primary) key   
+                              
+
+91*                                            10 * P a g e
+18. Which network device serves as the entry and exit point of a network, as
+      all data coming in or going out of a network must first pass through it in
+      order to use routing paths ?                                                 1
+
+      (A)   Modem                            (B) Gateway
+
+      (C)   Switch                           (D) Repeater
+
+
+
+19. Expand the term XML.                                                           1
+
+
+
+      Q. Nos. 20 and 21 are Assertion (A) and Reason (R) based questions. Mark
+      the correct choice as :
+
+      (A) Both Assertion (A) and Reason (R) are true and Reason (R) is the
+            correct explanation for Assertion (A).
+
+      (B) Both Assertion (A) and Reason (R) are true and Reason (R) is not the
+            correct explanation for Assertion (A).
+
+      (C) Assertion (A) is true, but Reason (R) is false.
+
+      (D) Assertion (A) is false, but Reason (R) is true.
+
+
+
+20. Assertion (A) : [1,2,3]+'123' is an invalid expression in Python.              1
+
+      Reason (R)       : In Python, a list cannot be concatenated with a string.
+
+
+
+21. Assertion (A) : The PRIMARY KEY constraint in SQL ensures that
+                         each value in the column(s) is unique and cannot be
+                         NULL.                                                     1
+
+      Reason (R)       : Candidate keys are not eligible to become a primary
+                         key.
+
+
+91*                                     11 * P a g e                           P.T.O.
+                                               –                                   (7  2 = 14)
+22.    (Python)    (default parameters)   
+      (Positional parameters)      ?    (Function header) 
+                                                             2
+
+23.             (  (BUILT_IN)
+       (FUNCTION) /  (METHODS)                                               2
+      (i)  (List) L       (List) L1    (ascending
+            order)   (List) L   (elements)   (arrange)  
+      (ii)    (character), ch   (alphabet)         
+               (statement)  
+24.         D1   (dictionary) ,                                      2
+      (i) (a)    (Python expression) ,      
+                   Key 'RNo', D1     
+                                              
+            (b)       Python expression   D1   key 
+                   value 12  
+      (ii) (a) D1   key 'RNo'    key : value pair 'RNo':12  
+                      (BUILT_IN)        statement
+                      key 'RNo'    function    (value)
+                      
+                                              
+            (b) D1   elements   (delete )    statement  
+
+25.     (Code)   (execution)       / 
+          ?          code   
+      for loop  ?                                                                             2
+      import random
+      a = [1,2,3,4,5,6]
+      for i in range(4):
+           j = random.randrange(i, 5)
+           print{a[j],end='–')
+      print()
+      Options :
+      (A) 3–4–5–4–                   (B)                   2–2–4–5–
+      (C) 4–3–3–5–                   (D)                   5–1–2–4–
+
+91*                                          12 * P a g e
+                                SECTION – B                         (7  2 = 14)
+22. What is the difference between default parameters and positional
+    parameters in Python ? Also give an example of a function header which
+    uses both.                                                                 2
+
+23. Write a Python statement to perform the following tasks : (USE
+    BUILT_IN FUNCTIONS / METHODS ONLY)                                               2
+    (i) To create a new list L1 containing the elements of list L arranged in
+        ascending order, without modifying list L.
+      (ii)   A statement to check whether the given character, ch is an alphabet
+             or a number.
+
+24. Assuming that D1 is a dictionary in Python,                                      2
+      (i)    (a)   Write a Python expression to check if the key, 'RNo' is present
+                   in D1.
+                                          OR
+             (b)   Write a Python expression to check if any key in D1 has a value
+                   12.
+      (ii)   (a)   Write a single statement using a BUILT_IN function to add the
+                   key : value pair 'RNo' : 12, if the key 'RNo'is not present in
+                   D1. However, if the key 'RNo' is present, the function should
+                   return its value.
+                                             OR
+             (b)   Write a single statement to delete all the elements from D1.
+
+
+25. What possible output(s) from the given options will NOT be displayed
+    when the following code is executed ? Also, mention, for how many
+    iterations the for loop in the given code will run ?                             2
+    import random
+    a = [1,2,3,4,5,6]
+    for i in range(4):
+         j = random.randrange(i,5)
+         print(a[j],end='–')
+    print()
+      Options :
+      (A) 3–4–5–4–                            (B)   2–2–4–5–
+      (C)    4–3–3–5–                         (D)   5–1–2–4–
+
+91*                                      13 * P a g e                          P.T.O.
+26.            string s     string   
+        (Vowels)     (return)           
+           
+                                            (logical errors)
+         (Syntax errors)             
+                                                                                      2
+      def CountVowels(s):
+            c=0
+            for ch in range(s):
+                  if 'aeiouAEIOU' in ch:
+                         c=+1
+            return(ch)
+
+27.          (Production Manager)    
+      (mineral water)              
+          (table)             
+          :                                                                      2
+      W_Code –    (type – CHAR(5))
+      W_Description –    (type – VARCHAR(20))
+      B_Qty –     (type – INTEGER)
+      U_Price –     (type – FLOAT)
+       (table)   W_STOCK  
+      (i)    (a)   (table)     SQL command  
+                   (W_Code  (primary) key   )
+                                                  
+             (b)  U_Price     key    ?   
+                     
+      (ii) (a)     table W_STOCK      ,    
+                   (attribute) E_Date (DATE type )     SQL
+                   command  
+                                            
+             (b)     table W_STOCK      , table  B_Qty
+                        SQL command  
+
+91*                                             14 * P a g e
+26. The function given below is written to accept a string s as a parameter
+    and return the number of vowels appearing in the string. The code has
+    certain errors. Observe the code carefully and rewrite it after removing all
+    the logical and syntax errors. Underline all the corrections made.             2
+      def CountVowels(s):
+             c=0
+             for ch in range(s):
+                   if 'aeiouAEIOU' in ch:
+                       c=+1
+             return(ch)
+
+
+27. Ms. Zoya is a Production Manager in a factory which packages mineral
+    water. She decides to create a table in a database to keep track of the
+    stock present in the factory. Each record of the table will have the
+    following fields :                                                             2
+      W_Code – Code of the item (type – CHAR(5))
+      W_Description – Description of the item (type – VARCHAR(20))
+      B_Qty – Balance quantity of the item (type – INTEGER)
+      U_Price – Unit Price of the item (type – FLOAT)
+      The name of the table is W_STOCK.
+      (i)    (a)   Write an SQL command to create the above table (W_Code
+                   should be the primary key).
+                                             OR
+             (b)   Can U_Price be the primary key of the above table ? Justify
+                   your answer.
+      (ii)   (a)   Assuming that the table W_STOCK is already created, write an
+                   SQL command to add an attribute E_Date (of DATE type) to the
+                   table.
+                                       OR
+             (b)   Assuming that the table W_STOCK is already created, write an
+                   SQL command to remove the column B_Qty from the table.
+
+91*                                     15 * P a g e                         P.T.O.
+28. (a)       (Bus topology)                                 2
+                                                
+      (b)         (Protocol)  ?     
+                Protocol     ?
+
+                                                –                                      (3  3 = 9)
+
+29. (a)          "Space.txt"  text file   
+            (digits)          (return)      ,
+                  :                                                                3
+            Space    exploration    has   unlocked    incredible
+            advancements in technology and science. Since the
+            first moon landing in 1969, space agencies have sent
+            probes to Mars, Jupiter and beyond. The ISS,
+            orbiting Earth at about 400 km, serves as a hub for
+            research. With missions planned for 2030, humanity’s
+            cosmic journey continues!
+
+
+               11  (return)   
+                                            
+      (b)        Space.txt        
+               'e'            ,    
+              :
+            Space    exploration    has   unlocked    incredible
+            advancements in technology and science. Since the
+            first moon landing in 1969, space agencies have sent
+            probes to Mars, Jupiter and beyond. The ISS,
+            orbiting Earth at about 400 km, serves as a hub for
+            research. With missions planned for 2030, humanity’s
+            cosmic journey continues!
+
+
+                   
+            incredible          advancements           science.         agencies         serves
+            research.
+
+
+91*                                           16 * P a g e
+28. (a)     List one advantage and one disadvantage of Bus topology.             2
+                                       OR
+      (b)   What is protocol in the context of computer networks? Which
+            protocol is used to transmit hypertext across the web?
+
+
+                                    SECTION – C                         (3  3 = 9)
+
+29. (a)     Write a Python function that counts and returns the number of
+            digits appearing in the text file "Space.txt". For example, if the
+            file contains :                                                      3
+            Space    exploration    has   unlocked    incredible
+            advancements in technology and science. Since the
+            first moon landing in 1969, space agencies have sent
+            probes to Mars, Jupiter and beyond. The ISS,
+            orbiting Earth at about 400 km, serves as a hub for
+            research. With missions planned for 2030, humanity’s
+            cosmic journey continues!
+
+
+            Then the function should return 11.
+                                       OR
+      (b)   Write a Python function that displays the words in which the
+            lowercase letter 'e' appears at least twice in the text file
+            'Space.txt'. For example, if the file contains :
+            Space    exploration    has   unlocked    incredible
+            advancements in technology and science. Since the
+            first moon landing in 1969, space agencies have sent
+            probes to Mars, Jupiter and beyond. The ISS,
+            orbiting Earth at about 400 km, serves as a hub for
+            research. With missions planned for 2030, humanity’s
+            cosmic journey continues!
+
+
+            Then the function should display :
+            incredible        advancements       science.   agencies   serves
+            research.
+
+91*                                    17 * P a g e                        P.T.O.
+30. (a)     FruitStack   stack,   list ()   (implement)
+              ,           ‘Name’, ‘Origin’, ‘Price’
+             ‘Expiry’ Keys   dictionary          
+                :                                                                     3
+            {'Name':'Apple','Origin':'France','Price':120,
+            'Expiry':'12-08-2025'}
+            FruitStack    (Operations)      
+                (User defined functions)   :
+            (i) push_fruit(FruitStack, Fruit):   FruitStack
+                        Fruit   (argument)      
+                     (Price) 100   ,  Fruit     record 
+                   FruitStack   (push)   
+            (ii) pop_fruit(FruitStack):    (stack)  
+                   (topmost)    (pop)    (return)    
+                   stack         “UNDERFLOW”    
+            (iii) display(FruitStack):     (topmost element)
+                      Stack   elements       stack 
+                   (empty)     “EMPTY STACK”    
+                                               
+      (b)   User  10 integers  input          User
+                 (three digit even integer)      stack
+                    , stack        (three digit
+            even integers) pop     (display)       ,
+            12, 31, 320, 457, 6, 92, 924, 220, 1, 218   (entry)    Stack
+                
+            320, 924, 220, 218
+               output    :
+            218 220 924 320
+31. (a)       (code)  output  :                                               3
+            def Exam2026(given) :
+                new=[]
+                for ch in given[1:-1]:
+                   if ch.isupper():
+                       new.reverse()
+                   elif ch not in new:
+                       new.append(ch)
+                   elif ch in new:
+                       new.pop()
+                print(new)
+            Exam2026("Gold–24Medals")
+                                            
+91*                                          18 * P a g e
+30. (a)     A stack named FruitStack, implemented using list, contains
+            records of some fruits. Each record is represented as a dictionary
+            with keys ‘Name’, ‘Origin’, ‘Price’, and ‘Expiry’. A sample record is
+            given here :                                                             3
+            {'Name':'Apple','Origin':'France','Price':120,
+            'Expiry':'12-08-2025'}
+            Write the following user-defined functions in Python to perform the
+            specified operations on FruitStack :
+            (i) push_fruit(FruitStack, Fruit): This function takes the
+                  stack FruitStack and a new record Fruit as arguments and
+                  pushes the record stored in Fruit onto FruitStack if the
+                  Price is less than 100.
+            (ii) pop_fruit(FruitStack): This function pops the topmost
+                  record from the stack and returns it. If the stack is already
+                  empty, the function should display “UNDERFLOW”.
+            (iii) display(FruitStack): This function displays all the
+                  elements of the stack starting from the topmost element. If the
+                  stack is empty, the function should display ‘EMPTY STACK’.
+                                         OR
+      (b)   Write a Python program to accept 10 integers from the user. If the
+            entered number is a three-digit even integer, push it onto a stack.
+            After all inputs are taken, pop all the three-digit even integers from
+            the stack and display them. For example, if the user enters 12, 31,
+            320, 457, 6, 92, 924, 220, 1, 218, then the stack should contain :
+            320, 924, 220, 218
+            and the output of the program should be :
+            218 220 924 320
+
+31. (a)     Write the output of the following code :                                 3
+            def Exam2026(given) :
+                new=[]
+                for ch in given[1:-1]:
+                     if ch.isupper():
+                          new.reverse()
+                     elif ch not in new:
+                          new.append(ch)
+                     elif ch in new:
+                          new.pop()
+                print(new)
+            Exam2026("Gold–24Medals")
+                                        OR
+
+91*                                     19 * P a g e                           P.T.O.
+      (b)      output  :
+            def Exam2026(given):
+                    new = 0
+                    while given:
+                         if new % 2:
+                               new += given % 10
+                         else:
+                               new += given % 5
+                         print(new, end='–')
+                         given //= 10
+            Exam2026(123456)
+
+
+                                               –                                   (4  4 = 16)
+
+
+32.     STOCK     (table)           
+      data       (set)   Table       (data) 
+         table      :                                             41=4
+
+
+
+
+      (a)      data        SQL queries  
+            (i)             (Type)  
+                    (Maximum Price)  
+            (ii)        Price  0.5     (Type)'F'  
+            (iii)          (Qty  Price   )
+            (iv)            Code, 'A'     
+                                               
+91*                                           20 * P a g e
+      (b)   Write the output of the following code :
+            def Exam2026(given):
+                   new = 0
+                   while given:
+                       if new % 2:
+                             new += given % 10
+                       else:
+                             new += given % 5
+                       print(new, end='–')
+                       given //= 10
+            Exam2026(123456)
+
+
+                                     SECTION – D                             (4  4 = 16)
+
+
+32. Abhishek has created a table, named STOCK, with a set of records to
+    maintain the data of packaged milk in his shop. After creating the table,
+    he entered the data and the table looked as follows :                41=4
+
+
+
+
+      (a)   Based on the data given above, write the SQL queries for the
+            following tasks :
+            (i)    To display Type and the maximum Price for each Type of
+                   milk.
+            (ii)   For each record, increase the Price by 0.5 where Type is 'F'.
+            (iii) To display the total value of the stock (total of Qty  Price).
+            (iv) To display the details of all records where Code starts with
+                 'A'.
+                                        OR
+
+91*                                     21 * P a g e                                P.T.O.
+      (b)       table STOCK      queries   
+             output  
+             (i)    SELECT Volume, Qty, Price FROM STOCK
+                       WHERE Type IN ('F','D');
+             (ii)   SELECT Code, Qty from STOCK
+                       WHERE Price BETWEEN 30 AND 50;
+             (iii) SELECT DISTINCT Type FROM STOCK;
+             (iv) SELECT Volume, count(*) FROM STOCK GROUP BY
+                  Volume;
+
+
+33. "States.csv"   csv             
+            :                                                 4
+              
+              
+              
+              
+                 :
+      ['Andhra Pradesh','Amaravati',52221000,'Telugu']
+       Python             ,  
+      10000000   ,   csv  'More.csv'    
+       : "States.csv"  Header row    Header row  More.csv 
+           
+
+34.          (Finance House)        
+              (tables) : CUSTOMERS  LOANS    
+       tables    (sample data)     :                      41=4
+                                         Table: CUSTOMERS
+
+
+
+
+91*                                            22 * P a g e
+      (b)   Considering the table STOCK as given above, write the output on
+            execution of the following queries :
+            (i)    SELECT Volume, Qty, Price FROM STOCK
+                      WHERE Type IN ('F','D');
+            (ii)   SELECT Code, Qty FROM STOCK
+                      WHERE Price BETWEEN 30 AND 50;
+            (iii) SELECT DISTINCT Type FROM STOCK;
+            (iv) SELECT Volume, count(*) FROM STOCK GROUP BY
+                 Volume;
+
+
+33. A csv file "States.csv" contains some data about all the states of India.
+    Each record of the file contains the following data :                       4
+           Name of the State
+           Capital of the State
+           Population of the State
+           Official Language of the State
+      For example, a sample record in the file is :
+      ['Andhra Pradesh','Amaravati',52221000,'Telugu']
+      Write a Python program which reads the data from this file and appends
+      all those records where population is more than 10000000 into another
+      csv file 'More.csv'.
+      Note : "States.csv" also contains the Header row. The Header row
+      should NOT be copied to "More.csv".
+
+
+34. Assume that you are the Manager of the Loans department of a Finance
+    House. To keep track of the loans you have created two tables : CUSTOMERS
+    and LOANS. The sample data in these tables is given below :           41=4
+                                   Table: CUSTOMERS
+
+
+
+
+91*                                     23 * P a g e                      P.T.O.
+                                     Table: LOANS
+
+
+
+
+       : tables              
+                      
+           queries  
+      (i)    LOANS          (RoI) 7.0    
+      (ii)         (L_Amt) 1000000    
+      (iii)     C_ID, C_Name  Terms     (L_Date)
+             31 , 2024     
+      (iv) (a)   (RoI)    (descending order)      
+                                               
+             (b) LOANS table   C_ID   C_ID    (term) 
+
+
+35.     MySQL , SCHOOL  Account      ,   
+        :                                                                                  4
+           Stud_id – integer
+           Sname – string
+           Class – string
+           Fees – float
+                (Python)      
+       5000    
+       (Python)  MySQL    (connection)     
+         :
+           Username – admin
+           Password – root
+           Host – localhost
+
+91*                                          24 * P a g e
+                                    Table: LOANS
+
+
+
+
+      Note : The tables may contain more records than shown here.
+      The management of the Finance House needs certain reports from you.
+      Write the queries to extract the following data to create the reports :
+      (i)     Number of records from LOANS table where Rate of Interest (RoI) is
+              above 7.0.
+      (ii)    Names of the customers whose loan amount (L_Amt) is above
+              1000000.
+      (iii)   C_ID, C_Name and Terms of all those records where Loan Date
+              (L_Date) is after 31st December, 2024.
+      (iv)    (a)   Details of all the loans in the descending order of RoI.
+                                          OR
+              (b)   C_ID and average term for each C_ID from the LOANS table.
+
+
+35. Peter has created a table named Account in MySQL database, SCHOOL,
+    having following structure :                                                    4
+             Stud_id – integer
+             Sname – string
+             Class – string
+             Fees – float
+      Help him in writing a Python program to display records of those students
+      whose fees is less than 5000.
+      Note the following to establish connectivity between Python and MySQL :
+             Username – admin
+             Password – root
+             Host – localhost
+
+
+91*                                        25 * P a g e                         P.T.O.
+                                                   –                                (2  5 = 10)
+36.       (ICT)         (Training
+      workshops)     Next Step       
+      (Resource Persons)             
+       (    )    RESOURCES.DAT  
+      (Binary)                                                       2+3=5
+               (R_ID, R_Name, R_Expertise, Charges)
+       :
+      R_ID              –      (Resource Person ID) (An integer)
+      R_Name            -     (Resource Person Name) (A string)
+      R_Expertise -       (Area of Expertise of the
+                    Resource Person)
+      Charges           -         ( )
+        ,      :
+      (12, 'P. Velusami','Machine Learning',5000)
+             (user defined functions)   
+       :
+      (i)    Append() –      (input)   RESOURCES.DAT
+                               
+      (ii) Update() –      (Charges) 500  
+
+37.   ,           (head office)  
+                         
+       (ADMIN),  (ACADEMIC),  (HOSTEL),  (SPORTS) 
+       /  
+       /                (i) 
+      (v)    /        -    
+                                                51=5
+                                          
+
+                                                      
+                           (ADMIN Block)                (ACADEMIC Block)
+
+                                                    
+                          (HOSTEL Block)                  (SPORTS Block)
+
+91*                                             26 * P a g e
+                                       SECTION – E                         (2  5 = 10)
+36. NextStep is an organization which has a pool of resource persons to
+    conduct training workshops on various topics related to ICT. The data of
+    all its Resource Persons is stored in a binary file RESOURCES.DAT using
+    the following record structure (each record is a tuple) :           2+3=5
+           (R_ID, R_Name, R_Expertise, Charges)
+      where :
+      R_ID            – Resource Person’s ID (An integer)
+      R_Name          - Resource Person’s Name (A string)
+      R_Expertise - Area of expertise of the Resource Person
+      Charges         - Charges (in rupees) per hour to conduct a workshop
+      For example, a record in the file is :
+      (12, 'P. Velusami','Machine Learning',5000)
+      In this context, write the following user defined functions in Python :
+      (i)    Append() – To input the data of a Resource Person and write it in
+                        the file RESOURCES.DAT.
+      (ii)   Update() – To increase the Charges of each resource person by
+                        500.
+
+
+37. Sanjeevani is a big group of educational institutions with its head office in
+    Hyderabad. It is planning to set up a new University in Amritsar. The
+    Amritsar University Campus will have four blocks/buildings – ADMIN,
+    ACADEMIC, HOSTEL, SPORTS. You, as a network expert, need to
+    suggest the best network-related solutions for them to resolve the
+    issues/problems mentioned in points (i) to (v), keeping in mind the distances
+    between various blocks / buildings and other given parameters.           51=5
+                            Amritsar University Campus
+
+
+                              ADMIN             ACADEMIC
+                               Block              Block
+
+
+                             HOSTEL               SPORTS
+                               Block                Block
+
+
+91*                                      27 * P a g e                           P.T.O.
+                             Block to Block distances (in Mtrs.)
+                            FROM                       TO            DISTANCE
+                      (ADMIN)           (ACADEMIC)              60 M
+
+                      (ADMIN)           (HOSTEL)            160 M
+
+                      (ADMIN)            (SPORTS)                80 M
+
+                     (ACADEMIC) (HOSTEL)                      40 M
+
+                     (ACADEMIC)  (SPORTS)                        120 M
+
+                     (HOSTEL)  (SPORTS)                       150 M
+
+               = 2000 ..  
+               :
+                                  (ADMIN)                 25
+
+                                 (ACADEMIC)                600
+
+                                 (HOSTEL)               120
+
+                                  (SPORTS)                  50
+
+      (i)           (server)      
+                     
+      (ii)                 
+              cable layout    
+
+      (iii)                  
+                   (wired media)    
+      (iv)        ,        (24  7),
+               FM     FM       
+              (Communication medium)      ?
+
+              (A)     (Radio Waves)
+              (B)     (Micro Waves)
+              (C)     (Infrared Waves)
+
+91*                                             28 * P a g e
+                          Block to Block distances (in Mtrs.)
+                           FROM              TO           DISTANCE
+
+                     ADMIN             ACADEMIC               60 M
+
+                     ADMIN             HOSTEL                 160 M
+
+                     ADMIN             SPORTS                 80 M
+
+                     ACADEMIC          HOSTEL                 40 M
+
+                     ACADEMIC          SPORTS                 120 M
+
+                     HOSTEL            SPORTS                 150 M
+
+      Distance of Hyderabad Head Office from Amritsar University Campus =
+      2000 km.
+
+      Number of computers in each block is as follows :
+                              ADMIN                 25
+
+                              ACADEMIC              600
+
+                              HOSTEL                120
+
+                              SPORTS                50
+
+      (i)     Suggest the most appropriate location of the server inside the
+              Amritsar University Campus. Justify your choice.
+
+      (ii)    Draw the cable layout to efficiently connect various blocks within
+              the Amritsar University Campus.
+
+      (iii)   Name any two wired media that can be used to connect various
+              computers of a block inside Amritsar Campus.
+
+      (iv)    For the academic purpose, the University will provide its own 24  7
+              FM channel within the University Campus. Which communication
+              medium, out of the following, is used by FM ?
+
+              (A) Radio Waves
+
+              (B) Micro Waves
+
+              (C) Infrared Waves
+
+
+91*                                      29 * P a g e                          P.T.O.
+      (v)   (a)      (online)         
+                  -  (Audio-visual communication)    
+                   (Protocol)           
+                       
+                                           
+            (b)       (signals)       
+                     (repeater)      ?   
+                    
+                                            _____________
+
+
+
+
+91*                                         30 * P a g e
+      (v)   (a)   The students will be attending a lot of online academic sessions
+                  and workshops. These will involve audio-visual communication.
+                  Write the full name of the protocol which will be used for such
+                  a communication through the internet.
+                                        OR
+            (b)   Where should a repeater be installed in Amritsar University
+                  campus to boost the signal between blocks ? Justify your
+                  answer.
+                                     _____________
+
+
+
+
+91*                                     31 * P a g e                           P.T.O.
+91*   2334   32 * P a g e
+

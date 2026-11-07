@@ -1,0 +1,1169 @@
+{
+  "paperId": "cbse_2025_cs083_set4_qp91",
+  "title": "CBSE Class 12 Computer Science (083) 2025 - Set 4 (QP Code 91)",
+  "subject": "Computer Science",
+  "subjectCode": "083",
+  "academicSession": "2024-2025",
+  "year": 2025,
+  "set": 4,
+  "qpCode": "91",
+  "maximumMarks": 70,
+  "durationMinutes": 180,
+  "totalQuestions": 37,
+  "sections": [
+    {
+      "section": "A",
+      "name": "Section A",
+      "questionCount": 21,
+      "marksPerQuestion": 1,
+      "totalMarks": 21,
+      "description": "Multiple Choice & Assertion-Reason Questions (Q1-Q21)"
+    },
+    {
+      "section": "B",
+      "name": "Section B",
+      "questionCount": 7,
+      "marksPerQuestion": 2,
+      "totalMarks": 14,
+      "description": "Short Answer Programming & Conceptual Questions (Q22-Q28)"
+    },
+    {
+      "section": "C",
+      "name": "Section C",
+      "questionCount": 3,
+      "marksPerQuestion": 3,
+      "totalMarks": 9,
+      "description": "Short Answer II - File Handling, Stacks & Tracing (Q29-Q31)"
+    },
+    {
+      "section": "D",
+      "name": "Section D",
+      "questionCount": 4,
+      "marksPerQuestion": 4,
+      "totalMarks": 16,
+      "description": "Long Answer I - SQL Queries, CSV Processing & Connectivity (Q32-Q35)"
+    },
+    {
+      "section": "E",
+      "name": "Section E",
+      "questionCount": 2,
+      "marksPerQuestion": 5,
+      "totalMarks": 10,
+      "description": "Long Answer II - Binary Files & Networking Case Study (Q36-Q37)"
+    }
+  ],
+  "questions": [
+    {
+      "questionNumber": 1,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Python Data Types",
+      "type": "true_false",
+      "questionText": "State True or False : In Python, data type of 74 is same as the data type of 74.0.",
+      "modelAnswer": "False",
+      "acceptedAlternatives": [
+        "false",
+        "False.",
+        "FALSE",
+        "F"
+      ],
+      "criteria": [
+        {
+          "step": "Correct state identification",
+          "marks": 1,
+          "description": "States False (74 is int and 74.0 is float, which are different data types)"
+        }
+      ],
+      "explanation": "74 is of type int whereas 74.0 is of type float. In Python, int and float are distinct numeric types.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 2,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Python String Methods",
+      "type": "mcq",
+      "questionText": "Identify the output of the following code snippet :\ns = \"the Truth\"\nprint(s.capitalize())\n(A) The truth\n(B) THE TRUTH\n(C) The Truth\n(D) the Truth",
+      "modelAnswer": "(A) The truth",
+      "acceptedAlternatives": [
+        "A",
+        "(A)",
+        "The truth",
+        "A. The truth",
+        "(A) The truth."
+      ],
+      "criteria": [
+        {
+          "step": "Identification of capitalize() behavior",
+          "marks": 1,
+          "description": "Identifies option (A) or 'The truth'"
+        }
+      ],
+      "explanation": "The capitalize() method converts the first character of the string to capital letter and lowercases all other letters, producing 'The truth'.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 3,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Python Relational & Logical Operators",
+      "type": "mcq",
+      "questionText": "Which of the following expressions in Python evaluates to True ?\n(A) 2>3 and 2<3\n(B) 3>1 and 2\n(C) 3>1 and 3>2\n(D) 3>1 and 3<2",
+      "modelAnswer": "(C) 3>1 and 3>2",
+      "acceptedAlternatives": [
+        "C",
+        "(C)",
+        "3>1 and 3>2",
+        "C. 3>1 and 3>2"
+      ],
+      "criteria": [
+        {
+          "step": "Boolean evaluation of expression",
+          "marks": 1,
+          "description": "Selects (C) or '3>1 and 3>2'"
+        }
+      ],
+      "explanation": "Both 3>1 (True) and 3>2 (True) evaluate to boolean True. 3>1 and 2 evaluates to the integer 2 (not boolean True).",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 4,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Python String Partition",
+      "type": "mcq",
+      "questionText": "What is the output of the following code snippet ?\ns='War and Peace by Leo Tolstoy'\nprint(s.partition(\"by\"))\n(A) ('War and Peace ', 'by', ' Leo Tolstoy')\n(B) ['War and Peace ', 'by', ' Leo Tolstoy']\n(C) ('War and Peace ', ' Leo Tolstoy')\n(D) ['War and Peace ', ' Leo Tolstoy']",
+      "modelAnswer": "(A) ('War and Peace ', 'by', ' Leo Tolstoy')",
+      "acceptedAlternatives": [
+        "A",
+        "(A)",
+        "('War and Peace ', 'by', ' Leo Tolstoy')",
+        "A. ('War and Peace ', 'by', ' Leo Tolstoy')"
+      ],
+      "criteria": [
+        {
+          "step": "Partition tuple structure",
+          "marks": 1,
+          "description": "Selects (A) with 3-element tuple containing prefix, separator, and suffix"
+        }
+      ],
+      "explanation": "s.partition(sep) splits the string at the first occurrence of sep and returns a 3-tuple: (before, sep, after).",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 5,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Python String Slicing",
+      "type": "output",
+      "questionText": "What will be the output of the following statement ?\nprint(\"PythonProgram\"[–1:2:–2])",
+      "modelAnswer": "mrPnh",
+      "acceptedAlternatives": [
+        "'mrPnh'",
+        "\"mrPnh\"",
+        "mrPnh\n"
+      ],
+      "criteria": [
+        {
+          "step": "Reverse slicing with step -2",
+          "marks": 1,
+          "description": "Correct slice output 'mrPnh'"
+        }
+      ],
+      "explanation": "Index -1 is 'm', step -2 visits indices -1 ('m'), -3 ('r'), -5 ('P'), -7 ('n'), -9 ('h'), stopping before index 2 ('t' at index -11).",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 6,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Python Tuples",
+      "type": "mcq",
+      "questionText": "What will be the output of the following code snippet ?\nt = tuple('tuple')\nt2 = t[2],\nt += t2\nprint(t)\n(A) ('tuple')\n(B) ('tuple','p')\n(C) ('t', 'u', 'p', 'l', 'e', 'p')\n(D) ('t', 'u', 'p', 'l', 'e')",
+      "modelAnswer": "(C) ('t', 'u', 'p', 'l', 'e', 'p')",
+      "acceptedAlternatives": [
+        "C",
+        "(C)",
+        "('t', 'u', 'p', 'l', 'e', 'p')",
+        "C. ('t', 'u', 'p', 'l', 'e', 'p')"
+      ],
+      "criteria": [
+        {
+          "step": "Tuple unpacking and concatenation",
+          "marks": 1,
+          "description": "Selects option (C)"
+        }
+      ],
+      "explanation": "tuple('tuple') is ('t', 'u', 'p', 'l', 'e'). t[2], creates a single-element tuple ('p',). Concatenation produces ('t', 'u', 'p', 'l', 'e', 'p').",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 7,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Python Dictionaries",
+      "type": "mcq",
+      "questionText": "Which of the following statements is true about dictionaries in Python ?\n(A) A dictionary is an example of sequence datatype.\n(B) A dictionary cannot have two elements with same key.\n(C) A dictionary cannot have two elements with same value.\n(D) The key and value of an element cannot be the same.",
+      "modelAnswer": "(B) A dictionary cannot have two elements with same key.",
+      "acceptedAlternatives": [
+        "B",
+        "(B)",
+        "A dictionary cannot have two elements with same key.",
+        "B. A dictionary cannot have two elements with same key."
+      ],
+      "criteria": [
+        {
+          "step": "Dictionary key uniqueness property",
+          "marks": 1,
+          "description": "Selects option (B)"
+        }
+      ],
+      "explanation": "Dictionary keys must be unique. Duplicate keys will overwrite earlier entries with the same key.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 8,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Python Lists Exception Handling",
+      "type": "mcq",
+      "questionText": "If L is a list with 6 elements, then which of the following statements will raise an exception ?\n(A) L.pop(1)\n(B) L.pop(6)\n(C) L.insert(1,6)\n(D) L.insert(6,1)",
+      "modelAnswer": "(B) L.pop(6)",
+      "acceptedAlternatives": [
+        "B",
+        "(B)",
+        "L.pop(6)",
+        "B. L.pop(6)"
+      ],
+      "criteria": [
+        {
+          "step": "List index bounds checking",
+          "marks": 1,
+          "description": "Selects option (B) L.pop(6)"
+        }
+      ],
+      "explanation": "A 6-element list has valid indices from 0 to 5. Calling L.pop(6) raises IndexError: pop index out of range. insert() does not raise an exception even if the index is beyond bounds.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 9,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Python Functions & Return Values",
+      "type": "mcq",
+      "questionText": "What will be the output of the following code ?\ndef f1(a,b=1):\n    print(a+b,end='–')\nc=f1(1,2)\nprint(c,sep='*')\n(A) 3–2\n(B) 3–2*\n(C) 3–None\n(D) 3*None–",
+      "modelAnswer": "(C) 3–None",
+      "acceptedAlternatives": [
+        "C",
+        "(C)",
+        "3–None",
+        "3-None",
+        "C. 3–None"
+      ],
+      "criteria": [
+        {
+          "step": "Function execution and None return handling",
+          "marks": 1,
+          "description": "Selects option (C) 3–None"
+        }
+      ],
+      "explanation": "f1(1,2) prints 1+2 = 3 followed by '–'. Because f1 does not have an explicit return statement, it returns None. Then print(c) prints None directly following '–'.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 10,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "File Modes in Python",
+      "type": "mcq",
+      "questionText": "Consider the statement given below :\nf1 = open(\"pqr.dat\",\"________\")\nWhich of the following is the correct file mode to open the file in read only mode ?\n(A) a\n(B) rb\n(C) r+\n(D) rb+",
+      "modelAnswer": "(B) rb",
+      "acceptedAlternatives": [
+        "B",
+        "(B)",
+        "rb",
+        "B. rb",
+        "'rb'"
+      ],
+      "criteria": [
+        {
+          "step": "Binary read mode specification",
+          "marks": 1,
+          "description": "Selects option (B) rb"
+        }
+      ],
+      "explanation": "A .dat binary file must be opened with 'rb' for read-only binary mode.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 11,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Python Exception Handling",
+      "type": "true_false",
+      "questionText": "State whether the following statement is True or False :\nIn Python, Logical errors can be handled using try……except……finally statement.",
+      "modelAnswer": "False",
+      "acceptedAlternatives": [
+        "false",
+        "FALSE",
+        "F"
+      ],
+      "criteria": [
+        {
+          "step": "Error classification understanding",
+          "marks": 1,
+          "description": "States False (try..except handles runtime errors / exceptions, not logical bugs)"
+        }
+      ],
+      "explanation": "Logical errors represent flaws in the program's algorithm and produce wrong results without raising exceptions; try-except blocks only catch runtime exceptions.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 12,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Relational Database Keys",
+      "type": "mcq",
+      "questionText": "A table has two candidate keys, one of which is chosen as the primary key. How many alternate keys does this table have ?\n(A) 0\n(B) 1\n(C) 2\n(D) 3",
+      "modelAnswer": "(B) 1",
+      "acceptedAlternatives": [
+        "B",
+        "(B)",
+        "1",
+        "B. 1",
+        "One"
+      ],
+      "criteria": [
+        {
+          "step": "Alternate keys calculation",
+          "marks": 1,
+          "description": "Selects option (B) 1 (Candidate keys not chosen as Primary Key = 2 - 1 = 1)"
+        }
+      ],
+      "explanation": "Candidate keys that are not selected as the primary key are known as alternate keys. Here, 2 candidate keys - 1 primary key = 1 alternate key.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 13,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "SQL DDL Commands",
+      "type": "mcq",
+      "questionText": "Which of the following SQL command can change the degree of the existing relation ?\n(A) DROP TABLE\n(B) ALTER TABLE\n(C) UPDATE…SET\n(D) DELETE",
+      "modelAnswer": "(B) ALTER TABLE",
+      "acceptedAlternatives": [
+        "B",
+        "(B)",
+        "ALTER TABLE",
+        "B. ALTER TABLE"
+      ],
+      "criteria": [
+        {
+          "step": "DDL command identification",
+          "marks": 1,
+          "description": "Selects option (B) ALTER TABLE"
+        }
+      ],
+      "explanation": "Degree is the number of attributes/columns in a relation. The ALTER TABLE command (e.g., ADD or DROP column) modifies the number of columns and hence changes degree.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 14,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "SQL Query Interpretation",
+      "type": "mcq",
+      "questionText": "What will be the output of the query ?\nSELECT MACHINE_ID, MACHINE_NAME FROM INVENTORY WHERE QUANTITY <= 100;\n(A) All columns of INVENTORY table with quantity greater than 100\n(B) ID and name of machines with quantity less than 100 from INVENTORY table\n(C) All columns of INVENTORY table with quantity greater than or equal to 100\n(D) ID and name of machines with quantity less than or equal to 100 from INVENTORY table",
+      "modelAnswer": "(D) ID and name of machines with quantity less than or equal to 100 from INVENTORY table",
+      "acceptedAlternatives": [
+        "D",
+        "(D)",
+        "D. ID and name of machines with quantity less than or equal to 100 from INVENTORY table"
+      ],
+      "criteria": [
+        {
+          "step": "Projection and filter condition understanding",
+          "marks": 1,
+          "description": "Selects option (D)"
+        }
+      ],
+      "explanation": "The query selects only MACHINE_ID and MACHINE_NAME where QUANTITY is less than or equal to (<=) 100.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 15,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Database Cardinality & Degree",
+      "type": "mcq",
+      "questionText": "In MySQL database, a relation has 2 tuples and 3 attributes. If 2 attributes are deleted and 4 tuples are added, then what will be the cardinality of the relation ?\n(A) 4\n(B) 5\n(C) 6\n(D) 7",
+      "modelAnswer": "(C) 6",
+      "acceptedAlternatives": [
+        "C",
+        "(C)",
+        "6",
+        "C. 6"
+      ],
+      "criteria": [
+        {
+          "step": "Tuple addition to cardinality calculation",
+          "marks": 1,
+          "description": "Selects option (C) 6 (Initial tuples = 2, added 4 = 6)"
+        }
+      ],
+      "explanation": "Cardinality is the total number of tuples (rows). Initial tuples = 2, added tuples = 4. New cardinality = 2 + 4 = 6. (Deleting attributes alters degree, not cardinality).",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 16,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "SQL Aggregate Functions",
+      "type": "mcq",
+      "questionText": "In SQL, which aggregate function returns the smallest value from the column of a table ?\n(A) MIN()\n(B) MAX()\n(C) SMALL()\n(D) LOWER()",
+      "modelAnswer": "(A) MIN()",
+      "acceptedAlternatives": [
+        "A",
+        "(A)",
+        "MIN()",
+        "MIN",
+        "A. MIN()"
+      ],
+      "criteria": [
+        {
+          "step": "Aggregate function selection",
+          "marks": 1,
+          "description": "Selects option (A) MIN()"
+        }
+      ],
+      "explanation": "MIN() is the SQL aggregate function that returns the minimum (smallest) value of an expression or column.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 17,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Computer Networking Connectors",
+      "type": "mcq",
+      "questionText": "In the context of Computer Networks, which of the following is the correct full form of RJ 45 ?\n(A) Radio Jockey 45\n(B) Registered Jockey 45\n(C) Radio Jack 45\n(D) Registered Jack 45",
+      "modelAnswer": "(D) Registered Jack 45",
+      "acceptedAlternatives": [
+        "D",
+        "(D)",
+        "Registered Jack 45",
+        "D. Registered Jack 45"
+      ],
+      "criteria": [
+        {
+          "step": "Connector full form recognition",
+          "marks": 1,
+          "description": "Selects option (D) Registered Jack 45"
+        }
+      ],
+      "explanation": "RJ-45 stands for Registered Jack 45, the standardized 8-pin connector used for Ethernet network cabling.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 18,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Network Devices",
+      "type": "mcq",
+      "questionText": "Which network device serves as the entry and exit point of a network, as all data coming in or going out of a network must first pass through it in order to use routing paths ?\n(A) Modem\n(B) Gateway\n(C) Switch\n(D) Repeater",
+      "modelAnswer": "(B) Gateway",
+      "acceptedAlternatives": [
+        "B",
+        "(B)",
+        "Gateway",
+        "B. Gateway"
+      ],
+      "criteria": [
+        {
+          "step": "Network boundary device identification",
+          "marks": 1,
+          "description": "Selects option (B) Gateway"
+        }
+      ],
+      "explanation": "A Gateway joins two networks using different protocols and acts as an entry and exit gate for network traffic.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 19,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Web Standards & XML",
+      "type": "text",
+      "questionText": "Expand the term XML.",
+      "modelAnswer": "Extensible Markup Language",
+      "acceptedAlternatives": [
+        "eXtensible Markup Language",
+        "Extensible Markup Language (XML)",
+        "extensible markup language"
+      ],
+      "criteria": [
+        {
+          "step": "Expansion of XML acronym",
+          "marks": 1,
+          "description": "Extensible Markup Language (spelling variations accepted)"
+        }
+      ],
+      "explanation": "XML stands for Extensible Markup Language, a markup language designed to store and transport data.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 20,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Python Data Types & Operators (Assertion-Reason)",
+      "type": "assertion_reason",
+      "questionText": "Assertion (A) : [1,2,3]+'123' is an invalid expression in Python.\nReason (R) : In Python, a list cannot be concatenated with a string.",
+      "modelAnswer": "(A) Both Assertion (A) and Reason (R) are true and Reason (R) is the correct explanation for Assertion (A).",
+      "acceptedAlternatives": [
+        "A",
+        "(A)",
+        "A. Both Assertion (A) and Reason (R) are true and Reason (R) is the correct explanation for Assertion (A)."
+      ],
+      "criteria": [
+        {
+          "step": "Assertion and Reason validity assessment",
+          "marks": 1,
+          "description": "Selects option (A)"
+        }
+      ],
+      "explanation": "In Python, the '+' operator requires both operands to be of the same sequence type (list with list, string with string). Concatenating a list with a string raises TypeError.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 21,
+      "section": "A",
+      "maxMarks": 1,
+      "topic": "Database Integrity Constraints (Assertion-Reason)",
+      "type": "assertion_reason",
+      "questionText": "Assertion (A) : The PRIMARY KEY constraint in SQL ensures that each value in the column(s) is unique and cannot be NULL.\nReason (R) : Candidate keys are not eligible to become a primary key.",
+      "modelAnswer": "(C) Assertion (A) is true, but Reason (R) is false.",
+      "acceptedAlternatives": [
+        "C",
+        "(C)",
+        "C. Assertion (A) is true, but Reason (R) is false."
+      ],
+      "criteria": [
+        {
+          "step": "Primary and Candidate key property verification",
+          "marks": 1,
+          "description": "Selects option (C)"
+        }
+      ],
+      "explanation": "Assertion (A) is true because PRIMARY KEY enforces UNIQUE and NOT NULL. Reason (R) is false because ALL candidate keys are eligible to become the primary key.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 22,
+      "section": "B",
+      "maxMarks": 2,
+      "topic": "Python Function Parameters",
+      "type": "short_answer",
+      "questionText": "What is the difference between default parameters and positional parameters in Python ? Also give an example of a function header which uses both.",
+      "modelAnswer": "Positional parameters are arguments that must be passed in correct positional order and are required when calling the function. Default parameters have default values assigned in the function definition (parameter=value) and are optional; if omitted in the function call, their default value is used. In a function header, positional parameters must always precede default parameters.\nExample function header:\ndef interest(principal, time, rate=0.05):",
+      "acceptedAlternatives": [
+        "def calc(a, b=10):",
+        "def greet(name, msg='Hello'):",
+        "def info(name, age=18):",
+        "def area(length, breadth=10):"
+      ],
+      "criteria": [
+        {
+          "step": "Definition of difference between positional and default parameters",
+          "marks": 1,
+          "description": "Positional arguments are required and bound by position; default arguments have pre-assigned values and can be omitted. Positional must come before default."
+        },
+        {
+          "step": "Valid function header using both",
+          "marks": 1,
+          "description": "Syntactically correct def statement containing at least one positional parameter before a default parameter, e.g. def fn(x, y=5):"
+        }
+      ],
+      "explanation": "Positional arguments are mapped by order; default arguments provide fallback values. Non-default arguments cannot follow default arguments.",
+      "reviewFlags": {
+        "checkCodeSyntax": true,
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 23,
+      "section": "B",
+      "maxMarks": 2,
+      "topic": "Python Built-in Functions",
+      "type": "programming",
+      "questionText": "Write a Python statement to perform the following tasks : (USE BUILT_IN FUNCTIONS / METHODS ONLY)\n(i) To create a new list L1 containing the elements of list L arranged in ascending order, without modifying list L.\n(ii) A statement to check whether the given character, ch is an alphabet or a number.",
+      "modelAnswer": "(i) L1 = sorted(L)\n(ii) ch.isalnum()",
+      "acceptedAlternatives": [
+        "(i) L1 = sorted(L)",
+        "(ii) ch.isalnum() or ch.isalpha() or ch.isdigit()"
+      ],
+      "criteria": [
+        {
+          "step": "(i) List sorting without mutating original list",
+          "marks": 1,
+          "description": "Uses sorted(L) assigned to L1: L1 = sorted(L)"
+        },
+        {
+          "step": "(ii) Character alphanumeric check",
+          "marks": 1,
+          "description": "Uses ch.isalnum() or equivalent built-in method"
+        }
+      ],
+      "explanation": "sorted(L) creates a new sorted list without mutating L (unlike L.sort() which sorts in-place). isalnum() checks whether a character is alphanumeric.",
+      "reviewFlags": {
+        "checkCodeSyntax": true
+      }
+    },
+    {
+      "questionNumber": 24,
+      "section": "B",
+      "maxMarks": 2,
+      "topic": "Python Dictionaries",
+      "type": "programming",
+      "questionText": "Assuming that D1 is a dictionary in Python,\n(i) (a) Write a Python expression to check if the key, 'RNo' is present in D1.\n    OR\n    (b) Write a Python expression to check if value 12 is present in any key of D1.\n(ii) (a) Write a single statement using BUILT_IN function to add a key : value pair 'RNo':12 if key 'RNo' is not present in D1. If key 'RNo' is present, the function should display its value.\n    OR\n    (b) Write a statement to delete all elements from D1.",
+      "modelAnswer": "(i) (a) 'RNo' in D1\n    [OR (b) 12 in D1.values()]\n(ii) (a) D1.setdefault('RNo', 12)\n    [OR (b) D1.clear()]",
+      "acceptedAlternatives": [
+        "(i) 'RNo' in D1.keys() or 'RNo' in D1",
+        "(i-b) 12 in D1.values()",
+        "(ii-a) print(D1.setdefault('RNo', 12)) or D1.setdefault('RNo', 12)",
+        "(ii-b) D1.clear()"
+      ],
+      "criteria": [
+        {
+          "step": "Part (i): Key or Value membership check",
+          "marks": 1,
+          "description": "'RNo' in D1 (or 'RNo' in D1.keys()) OR 12 in D1.values()"
+        },
+        {
+          "step": "Part (ii): setdefault or clear invocation",
+          "marks": 1,
+          "description": "D1.setdefault('RNo', 12) OR D1.clear()"
+        }
+      ],
+      "explanation": "Membership operators check keys directly in dictionaries. setdefault() returns existing value if key is present or inserts key:value if absent. clear() removes all items.",
+      "reviewFlags": {
+        "checkCodeSyntax": true
+      }
+    },
+    {
+      "questionNumber": 25,
+      "section": "B",
+      "maxMarks": 2,
+      "topic": "Python Random Module & Loops",
+      "type": "short_answer",
+      "questionText": "Which of the given option(s) will not be displayed on the execution of the following code ? Also specify how many times the for loop given in the code will execute ?\nimport random\na = [1,2,3,4,5,6]\nfor i in range(4):\n    j = random.randrange(i, 5)\n    print(a[j],end='–')\nprint()\nOptions :\n(A) 3–4–5–4–\n(B) 2–2–4–5–\n(C) 4–3–3–5–\n(D) 5–1–2–4–",
+      "modelAnswer": "Option (D) will not be displayed.\nThe for loop will execute 4 times.",
+      "acceptedAlternatives": [
+        "(D) 5–1–2–4– will not be displayed; 4 times",
+        "Option (D); loop runs 4 times",
+        "(D) and 4"
+      ],
+      "criteria": [
+        {
+          "step": "Identification of invalid output option (D)",
+          "marks": 1,
+          "description": "Identifies option (D) 5–1–2–4– cannot be displayed because for i=1, random.randrange(1,5) generates 1..4 so a[j] can never be a[0]=1"
+        },
+        {
+          "step": "Loop iteration count",
+          "marks": 1,
+          "description": "Specifies 4 times / 4 iterations (for i in range(4))"
+        }
+      ],
+      "explanation": "In iteration i=1, j is between 1 and 4, so a[j] is in [2,3,4,5], never 1. Therefore (D) is impossible. range(4) causes exactly 4 loop executions.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 26,
+      "section": "B",
+      "maxMarks": 2,
+      "topic": "Python Debugging & Syntax/Logic Errors",
+      "type": "programming",
+      "questionText": "The following function is written to accept a string s as parameter and return the count of vowels appearing in the string. The code has some errors. Carefully observe the code and rewrite it after removing all logical and syntax errors. Underline each correction made.\ndef CountVowels(s):\n    c=0\n    for ch in range(s):\n        if 'aeiouAEIOU' in ch:\n            c=+1\n    return(ch)",
+      "modelAnswer": "def CountVowels(s):\n    c = 0\n    for ch in s:                 # Correction 1: range(s) replaced by s\n        if ch in 'aeiouAEIOU':   # Correction 2: membership reversed\n            c += 1               # Correction 3: c=+1 replaced by c+=1 or c=c+1\n    return c                     # Correction 4: return c instead of ch",
+      "acceptedAlternatives": [
+        "def CountVowels(s):\n    c=0\n    for ch in s:\n        if ch.lower() in 'aeiou':\n            c=c+1\n    return c",
+        "def CountVowels(s):\n    c=0\n    for i in range(len(s)):\n        if s[i] in 'aeiouAEIOU':\n            c+=1\n    return c"
+      ],
+      "criteria": [
+        {
+          "step": "Correction 1: Loop iteration over string",
+          "marks": 0.5,
+          "description": "Replaces range(s) with s (or range(len(s)))"
+        },
+        {
+          "step": "Correction 2: Vowel membership condition",
+          "marks": 0.5,
+          "description": "Replaces 'aeiouAEIOU' in ch with ch in 'aeiouAEIOU' (or in 'aeiou' with lower())"
+        },
+        {
+          "step": "Correction 3: Counter increment",
+          "marks": 0.5,
+          "description": "Replaces c=+1 with c+=1 or c=c+1"
+        },
+        {
+          "step": "Correction 4: Correct return identifier",
+          "marks": 0.5,
+          "description": "Replaces return(ch) with return c or return(c)"
+        }
+      ],
+      "explanation": "range() cannot take a string argument. 'aeiou...' cannot be inside a single char; instead the char must be in the vowels. c=+1 sets c to positive 1 rather than incrementing. The function must return the counter c.",
+      "reviewFlags": {
+        "checkCodeSyntax": true
+      }
+    },
+    {
+      "questionNumber": 27,
+      "section": "B",
+      "maxMarks": 2,
+      "topic": "SQL DDL & Constraints",
+      "type": "sql",
+      "questionText": "Ms. Zoya is a Production Manager in a factory which packages mineral water. She decides to create a table in a database to keep track of the stock present in the factory. Each record of the table will have the following fields :\nW_Code – Code of the item (type – CHAR(5))\nW_Description – Description of the item (type – VARCHAR(20))\nB_Qty – Balance quantity of the item (type – INTEGER)\nU_Price – Unit Price of the item (type – FLOAT)\nThe name of the table is W_STOCK.\n(i) (a) Write an SQL command to create the above table (W_Code should be the primary key).\n    OR\n    (b) Can U_Price be the primary key of the above table ? Justify your answer.\n(ii) (a) Assuming that the table W_STOCK is already created, write an SQL command to add an attribute Exp_Date of DATE type.\n    OR\n    (b) Assuming that the table W_STOCK is already created, write an SQL command to delete the attribute B_Qty from the table.",
+      "modelAnswer": "(i) (a) CREATE TABLE W_STOCK (\n    W_Code CHAR(5) PRIMARY KEY,\n    W_Description VARCHAR(20),\n    B_Qty INTEGER,\n    U_Price FLOAT\n);\n[OR (b) No, U_Price cannot be the primary key because multiple items can have the same price (not unique) or price could be NULL/changeable.]\n(ii) (a) ALTER TABLE W_STOCK ADD Exp_Date DATE;\n[OR (b) ALTER TABLE W_STOCK DROP COLUMN B_Qty;]",
+      "acceptedAlternatives": [
+        "CREATE TABLE W_STOCK (W_Code CHAR(5) PRIMARY KEY, W_Description VARCHAR(20), B_Qty INT, U_Price FLOAT);",
+        "ALTER TABLE W_STOCK ADD Exp_Date DATE;",
+        "ALTER TABLE W_STOCK DROP B_Qty;"
+      ],
+      "criteria": [
+        {
+          "step": "Part (i): CREATE TABLE with primary key OR justification for U_Price",
+          "marks": 1,
+          "description": "Valid CREATE TABLE statement with correct columns and PRIMARY KEY on W_Code OR 'No' with valid reason that prices can be duplicate/not unique"
+        },
+        {
+          "step": "Part (ii): ALTER TABLE ADD / DROP COLUMN",
+          "marks": 1,
+          "description": "ALTER TABLE W_STOCK ADD Exp_Date DATE; OR ALTER TABLE W_STOCK DROP [COLUMN] B_Qty;"
+        }
+      ],
+      "explanation": "CREATE TABLE specifies column names, types and constraints. ALTER TABLE ADD appends new columns while ALTER TABLE DROP removes existing columns.",
+      "reviewFlags": {
+        "checkSqlLogic": true
+      }
+    },
+    {
+      "questionNumber": 28,
+      "section": "B",
+      "maxMarks": 2,
+      "topic": "Network Topologies & Protocols",
+      "type": "short_answer",
+      "questionText": "(a) State one advantage and one disadvantage of Bus topology.\nOR\n(b) What is a Protocol in the context of computer networks ? Which protocol is used to transmit hypertext over the web ?",
+      "modelAnswer": "(a) Advantage: Easy to install and requires less cable length compared to star/mesh topology, making it cost effective.\nDisadvantage: If the main central backbone cable fails, the whole network breaks down; difficult to detect and isolate faults.\nOR\n(b) A Protocol is a set of formal rules and conventions that govern communication between network devices. HTTP (or HTTPS) is used to transmit hypertext over the web.",
+      "acceptedAlternatives": [
+        "(a) Advantage: simple, cheap, less cabling. Disadvantage: single point of failure, collision, backbone break.",
+        "(b) Rules for communication; HTTP / HTTPS"
+      ],
+      "criteria": [
+        {
+          "step": "Advantage and disadvantage of Bus topology OR Protocol definition",
+          "marks": 1,
+          "description": "1 mark for one valid advantage + one disadvantage of bus topology OR 1 mark for defining protocol as rules/standards for data communication"
+        },
+        {
+          "step": "Protocol identification",
+          "marks": 1,
+          "description": "1 mark for HTTP (Hypertext Transfer Protocol) or HTTPS"
+        }
+      ],
+      "explanation": "Bus topology uses a single backbone cable. A protocol defines message formats and rules for exchange; HTTP transports HTML documents over the World Wide Web.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 29,
+      "section": "C",
+      "maxMarks": 3,
+      "topic": "Python Text File Handling",
+      "type": "programming",
+      "questionText": "(a) Write a Python function that counts and returns the number of digits present in a text file named \"Space.txt\".\nOR\n(b) Write a Python function which displays those words from a text file named Space.txt which contain the letter 'e' at least twice.",
+      "modelAnswer": "# Option (a):\ndef count_digits():\n    f = open('Space.txt', 'r')\n    data = f.read()\n    count = 0\n    for ch in data:\n        if ch.isdigit():\n            count += 1\n    f.close()\n    return count\n\n# OR Option (b):\ndef display_words():\n    f = open('Space.txt', 'r')\n    data = f.read()\n    words = data.split()\n    for w in words:\n        if w.lower().count('e') >= 2:\n            print(w)\n    f.close()",
+      "acceptedAlternatives": [
+        "def count_digits(): with open('Space.txt') as f: return sum(1 for ch in f.read() if ch.isdigit())",
+        "def display_e(): with open('Space.txt') as f: [print(w) for w in f.read().split() if w.count('e') >= 2]"
+      ],
+      "criteria": [
+        {
+          "step": "File opening and reading",
+          "marks": 1,
+          "description": "Correct open('Space.txt', 'r') and reading data via read() or readlines()"
+        },
+        {
+          "step": "Condition check (isdigit() OR w.count('e') >= 2)",
+          "marks": 1,
+          "description": "Correct check for digits using isdigit() OR count('e') >= 2"
+        },
+        {
+          "step": "Count tracking & return / display output",
+          "marks": 1,
+          "description": "Maintains counter and returns it OR prints matching words, properly closing file"
+        }
+      ],
+      "explanation": "Iterates through file characters using isdigit() or splits into words and counts occurrences of 'e'.",
+      "reviewFlags": {
+        "checkCodeSyntax": true
+      }
+    },
+    {
+      "questionNumber": 30,
+      "section": "C",
+      "maxMarks": 3,
+      "topic": "Data Structures - Stack in Python",
+      "type": "programming",
+      "questionText": "(a) A stack named FruitStack, implemented using list, contains records of some fruits. Each record is represented as a dictionary with keys ‘Name’, ‘Origin’, ‘Price’, and ‘Expiry’. A sample record is: {'Name':'Apple','Origin':'France','Price':120,'Expiry':'12-08-2025'}\nWrite the following user-defined functions in Python:\n(i) push_fruit(FruitStack, Fruit): pushes record into FruitStack if Price < 100\n(ii) pop_fruit(FruitStack): pops and returns topmost record or displays 'UNDERFLOW'\n(iii) display(FruitStack): displays all elements from topmost or 'EMPTY STACK'\nOR\n(b) Write a Python program to accept 10 integers from user. Push three-digit even integers onto a stack, then pop all and display them.",
+      "modelAnswer": "# Option (a):\ndef push_fruit(FruitStack, Fruit):\n    if Fruit['Price'] < 100:\n        FruitStack.append(Fruit)\n\ndef pop_fruit(FruitStack):\n    if not FruitStack:\n        print('UNDERFLOW')\n        return None\n    return FruitStack.pop()\n\ndef display(FruitStack):\n    if not FruitStack:\n        print('EMPTY STACK')\n    else:\n        for i in range(len(FruitStack)-1, -1, -1):\n            print(FruitStack[i])\n\n# OR Option (b):\nstack = []\nfor _ in range(10):\n    num = int(input())\n    if 100 <= num <= 999 and num % 2 == 0:\n        stack.append(num)\nwhile stack:\n    print(stack.pop(), end=' ')",
+      "acceptedAlternatives": [
+        "push_fruit, pop_fruit, display functions implemented with list append/pop",
+        "10 inputs loop, checking 100 <= num <= 999 and num % 2 == 0, stack.pop() display"
+      ],
+      "criteria": [
+        {
+          "step": "Push operation with condition",
+          "marks": 1,
+          "description": "Checks Price < 100 (or 3-digit even) and appends to stack list"
+        },
+        {
+          "step": "Pop operation with underflow check",
+          "marks": 1,
+          "description": "Handles empty stack with UNDERFLOW check and returns/pops topmost element"
+        },
+        {
+          "step": "LIFO display traversal",
+          "marks": 1,
+          "description": "Displays elements in reverse order (top to bottom) or empty message"
+        }
+      ],
+      "explanation": "A Python list behaves as a stack using append() for push and pop() for pop. Stack operations adhere to Last-In-First-Out (LIFO).",
+      "reviewFlags": {
+        "checkCodeSyntax": true
+      }
+    },
+    {
+      "questionNumber": 31,
+      "section": "C",
+      "maxMarks": 3,
+      "topic": "Python Code Tracing & Output",
+      "type": "output",
+      "questionText": "(a) Write the output of the following code :\ndef Exam2026(given):\n    new=[]\n    for ch in given[1:-1]:\n        if ch.isupper():\n            new.reverse()\n        elif ch not in new:\n            new.append(ch)\n        elif ch in new:\n            new.pop()\n    print(new)\nExam2026(\"Gold–24Medals\")\nOR\n(b) Write the output of the following code :\ndef Exam2026(given):\n    new = 0\n    while given:\n        if new % 2:\n            new += given % 10\n        else:\n            new += given % 5\n        print(new, end='–')\n        given //= 10\nExam2026(123456)",
+      "modelAnswer": "Option (a): ['4', '2', '–', 'd', 'l', 'o']\nOR Option (b): 1–6–10–13–15–16–",
+      "acceptedAlternatives": [
+        "['4', '2', '–', 'd', 'l', 'o']",
+        "['4', '2', '-', 'd', 'l', 'o']",
+        "1–6–10–13–15–16–",
+        "1-6-10-13-15-16-"
+      ],
+      "criteria": [
+        {
+          "step": "Accurate code tracing",
+          "marks": 2,
+          "description": "Partial execution trace through string slicing/loop iterations"
+        },
+        {
+          "step": "Final exact output format",
+          "marks": 1,
+          "description": "Final list ['4', '2', '–', 'd', 'l', 'o'] OR sequence 1–6–10–13–15–16–"
+        }
+      ],
+      "explanation": "In (a), slice given[1:-1] omits 'G' and 's'. Uppercase 'M' reverses the list, duplicate letters 'd' and 'l' trigger new.pop(), resulting in ['4', '2', '–', 'd', 'l', 'o']. In (b), alternating parity calculations output 1–6–10–13–15–16–.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    },
+    {
+      "questionNumber": 32,
+      "section": "D",
+      "maxMarks": 4,
+      "topic": "SQL Queries on Single Table",
+      "type": "sql",
+      "questionText": "Abhishek has created a table named STOCK to maintain data of packaged milk in his shop. Write SQL queries for the following :\n(i) To display Type and maximum Price for each type of milk.\n(ii) To increase Price by 0.5 for all records where Type is 'F'.\n(iii) To display total value of the stock (Total sum of Qty * Price).\n(iv) To display details of all records where Code starts with 'A'.",
+      "modelAnswer": "(i) SELECT Type, MAX(Price) FROM STOCK GROUP BY Type;\n(ii) UPDATE STOCK SET Price = Price + 0.5 WHERE Type = 'F';\n(iii) SELECT SUM(Qty * Price) FROM STOCK;\n(iv) SELECT * FROM STOCK WHERE Code LIKE 'A%';",
+      "acceptedAlternatives": [
+        "SELECT Type, MAX(Price) FROM STOCK GROUP BY Type",
+        "UPDATE STOCK SET Price = Price + 0.5 WHERE Type = 'F'",
+        "SELECT SUM(Qty * Price) FROM STOCK",
+        "SELECT * FROM STOCK WHERE Code LIKE 'A%'"
+      ],
+      "criteria": [
+        {
+          "step": "(i) GROUP BY with MAX aggregate function",
+          "marks": 1,
+          "description": "SELECT Type, MAX(Price) FROM STOCK GROUP BY Type;"
+        },
+        {
+          "step": "(ii) UPDATE with arithmetic and WHERE filter",
+          "marks": 1,
+          "description": "UPDATE STOCK SET Price = Price + 0.5 WHERE Type = 'F';"
+        },
+        {
+          "step": "(iii) Aggregate expression SUM(Qty * Price)",
+          "marks": 1,
+          "description": "SELECT SUM(Qty * Price) FROM STOCK;"
+        },
+        {
+          "step": "(iv) Pattern matching with LIKE 'A%'",
+          "marks": 1,
+          "description": "SELECT * FROM STOCK WHERE Code LIKE 'A%';"
+        }
+      ],
+      "explanation": "GROUP BY organizes rows by Type; UPDATE modifies Price; SUM calculates arithmetic total across rows; LIKE 'A%' matches values starting with A.",
+      "reviewFlags": {
+        "checkSqlLogic": true
+      }
+    },
+    {
+      "questionNumber": 33,
+      "section": "D",
+      "maxMarks": 4,
+      "topic": "Python CSV File Processing",
+      "type": "programming",
+      "questionText": "A csv file \"States.csv\" contains some data about all the states of India. Each record contains: State Name, Capital, Population, Language.\nWrite a Python program which reads data from this file and appends all records where population > 10000000 into another csv file 'More.csv'.\nNote : \"States.csv\" contains Header row. The Header row should NOT be copied to \"More.csv\".",
+      "modelAnswer": "import csv\n\nwith open('States.csv', 'r', newline='') as f_in, open('More.csv', 'a', newline='') as f_out:\n    reader = csv.reader(f_in)\n    writer = csv.writer(f_out)\n    header = next(reader)  # Skip header row\n    for row in reader:\n        if int(row[2]) > 10000000:\n            writer.writerow(row)",
+      "acceptedAlternatives": [
+        "Using f.readlines() and csv.writer",
+        "Opening with open('States.csv') and open('More.csv', 'w')",
+        "float(row[2]) > 10000000"
+      ],
+      "criteria": [
+        {
+          "step": "Module import and file opening",
+          "marks": 1,
+          "description": "Imports csv and opens States.csv in read mode and More.csv in append/write mode"
+        },
+        {
+          "step": "Reader/writer objects & header skip",
+          "marks": 1,
+          "description": "Instantiates csv.reader/csv.writer and skips header using next(reader)"
+        },
+        {
+          "step": "Data conversion and population condition",
+          "marks": 1,
+          "description": "Iterates over rows, parses population to int/float and checks > 10000000"
+        },
+        {
+          "step": "Writing filtered row to output CSV",
+          "marks": 1,
+          "description": "Uses writer.writerow(row) to save qualifying records"
+        }
+      ],
+      "explanation": "The csv module provides reader and writer objects. next(reader) skips the header row. row[2] represents population and must be cast to integer for numeric comparison.",
+      "reviewFlags": {
+        "checkCodeSyntax": true
+      }
+    },
+    {
+      "questionNumber": 34,
+      "section": "D",
+      "maxMarks": 4,
+      "topic": "SQL Joins & Multi-table Queries",
+      "type": "sql",
+      "questionText": "Assume tables CUSTOMERS (C_ID, C_Name, City) and LOANS (L_No, C_ID, L_Amt, RoI, Terms, L_Date).\nWrite queries to extract :\n(i) Number of records from LOANS table where Rate of Interest (RoI) is above 7.0.\n(ii) Names of the customers whose loan amount (L_Amt) is above 1000000.\n(iii) C_ID, C_Name and Terms of all records where Loan Date (L_Date) is after 31st December, 2024.\n(iv) (a) Details of all loans in descending order of RoI.\n    OR\n    (b) C_ID and average term for each C_ID from LOANS table.",
+      "modelAnswer": "(i) SELECT COUNT(*) FROM LOANS WHERE RoI > 7.0;\n(ii) SELECT C_Name FROM CUSTOMERS, LOANS WHERE CUSTOMERS.C_ID = LOANS.C_ID AND L_Amt > 1000000;\n(iii) SELECT CUSTOMERS.C_ID, C_Name, Terms FROM CUSTOMERS, LOANS WHERE CUSTOMERS.C_ID = LOANS.C_ID AND L_Date > '2024-12-31';\n(iv) (a) SELECT * FROM LOANS ORDER BY RoI DESC;\n    [OR (b) SELECT C_ID, AVG(Terms) FROM LOANS GROUP BY C_ID;]",
+      "acceptedAlternatives": [
+        "(ii) SELECT C_Name FROM CUSTOMERS JOIN LOANS ON CUSTOMERS.C_ID = LOANS.C_ID WHERE L_Amt > 1000000;",
+        "(iii) SELECT C.C_ID, C_Name, Terms FROM CUSTOMERS C JOIN LOANS L ON C.C_ID = L.C_ID WHERE L_Date > '2024-12-31';"
+      ],
+      "criteria": [
+        {
+          "step": "(i) COUNT aggregate function with WHERE filter",
+          "marks": 1,
+          "description": "SELECT COUNT(*) FROM LOANS WHERE RoI > 7.0;"
+        },
+        {
+          "step": "(ii) Equi-join on C_ID with L_Amt filter",
+          "marks": 1,
+          "description": "SELECT C_Name FROM CUSTOMERS, LOANS WHERE CUSTOMERS.C_ID = LOANS.C_ID AND L_Amt > 1000000;"
+        },
+        {
+          "step": "(iii) Join projection with date comparison",
+          "marks": 1,
+          "description": "SELECT CUSTOMERS.C_ID, C_Name, Terms FROM CUSTOMERS, LOANS WHERE CUSTOMERS.C_ID = LOANS.C_ID AND L_Date > '2024-12-31';"
+        },
+        {
+          "step": "(iv) ORDER BY DESC OR GROUP BY with AVG()",
+          "marks": 1,
+          "description": "SELECT * FROM LOANS ORDER BY RoI DESC; OR SELECT C_ID, AVG(Terms) FROM LOANS GROUP BY C_ID;"
+        }
+      ],
+      "explanation": "Demonstrates COUNT, two-table equi-join matching primary-foreign keys, date comparison in SQL ('YYYY-MM-DD'), and ORDER BY / GROUP BY.",
+      "reviewFlags": {
+        "checkSqlLogic": true
+      }
+    },
+    {
+      "questionNumber": 35,
+      "section": "D",
+      "maxMarks": 4,
+      "topic": "Python MySQL Connectivity",
+      "type": "programming",
+      "questionText": "Peter has created a table named Account in MySQL database, SCHOOL, having structure : Stud_id, Sname, Class, Fees.\nHelp him in writing a Python program to display records of those students whose fees is less than 5000.\nCredentials : Host: localhost, Username: admin, Password: root, Database: SCHOOL.",
+      "modelAnswer": "import mysql.connector\n\ncon = mysql.connector.connect(\n    host='localhost',\n    user='admin',\n    password='root',\n    database='SCHOOL'\n)\ncursor = con.cursor()\ncursor.execute('SELECT * FROM Account WHERE Fees < 5000')\nrecords = cursor.fetchall()\nfor row in records:\n    print(row)\ncursor.close()\ncon.close()",
+      "acceptedAlternatives": [
+        "import mysql.connector as sqltor; con = sqltor.connect(...)",
+        "cursor.fetchone() in while loop",
+        "for r in cursor: print(r)"
+      ],
+      "criteria": [
+        {
+          "step": "Import and connector configuration",
+          "marks": 1,
+          "description": "Imports mysql.connector and establishes connection with host, user, password, database"
+        },
+        {
+          "step": "Cursor instantiation & SQL execution",
+          "marks": 1,
+          "description": "Creates cursor and executes SELECT query with WHERE Fees < 5000"
+        },
+        {
+          "step": "Record fetching and display",
+          "marks": 1,
+          "description": "Fetches rows via fetchall() / fetchone() and iterates to display"
+        },
+        {
+          "step": "Clean resource release",
+          "marks": 1,
+          "description": "Closes cursor and database connection cleanly"
+        }
+      ],
+      "explanation": "Python connects to MySQL using mysql.connector.connect(). A cursor executes the SQL command, and fetchall() retrieves rows as tuples.",
+      "reviewFlags": {
+        "checkCodeSyntax": true
+      }
+    },
+    {
+      "questionNumber": 36,
+      "section": "E",
+      "maxMarks": 5,
+      "topic": "Python Binary File Handling (Pickle)",
+      "type": "programming",
+      "questionText": "NextStep stores data of Resource Persons in a binary file RESOURCES.DAT with record structure: (R_ID, R_Name, R_Expertise, Charges).\nWrite user-defined functions in Python :\n(i) Append() – accepts Resource Person data from user and writes to RESOURCES.DAT (2 marks)\n(ii) Update() – increases Charges of each Resource Person by 500 (3 marks)",
+      "modelAnswer": "import pickle\nimport os\n\ndef Append():\n    f = open('RESOURCES.DAT', 'ab')\n    rid = int(input('Enter ID: '))\n    name = input('Enter Name: ')\n    exp = input('Enter Expertise: ')\n    charges = float(input('Enter Charges: '))\n    rec = (rid, name, exp, charges)\n    pickle.dump(rec, f)\n    f.close()\n\ndef Update():\n    f = open('RESOURCES.DAT', 'rb+')\n    try:\n        while True:\n            pos = f.tell()\n            rec = pickle.load(f)\n            updated_rec = (rec[0], rec[1], rec[2], rec[3] + 500)\n            f.seek(pos)\n            pickle.dump(updated_rec, f)\n    except EOFError:\n        pass\n    finally:\n        f.close()",
+      "acceptedAlternatives": [
+        "Update using temporary file and os.remove/os.rename",
+        "Loading all records into a list, updating, and dumping back in 'wb' mode",
+        "Append with loop asking user if they want to enter more records"
+      ],
+      "criteria": [
+        {
+          "step": "Append(): Open in 'ab' mode and pickle.dump",
+          "marks": 2,
+          "description": "1 mark for opening in 'ab' and taking input; 1 mark for creating tuple and pickle.dump(rec, f)"
+        },
+        {
+          "step": "Update(): File opening in 'rb+' or temp file approach",
+          "marks": 1,
+          "description": "Opens file and reads records using pickle.load() inside try-except EOFError"
+        },
+        {
+          "step": "Update(): Calculation of charges + 500",
+          "marks": 1,
+          "description": "Correctly increments Charges element by 500 in record tuple/list"
+        },
+        {
+          "step": "Update(): Overwriting record back into file",
+          "marks": 1,
+          "description": "Uses seek(pos) and dump, or writes all updated records back to file"
+        }
+      ],
+      "explanation": "Binary files require pickle.dump() for serialization and pickle.load() for deserialization. Appending uses 'ab' mode; in-place update uses seek() with 'rb+' mode or temp file replacement.",
+      "reviewFlags": {
+        "checkCodeSyntax": true
+      }
+    },
+    {
+      "questionNumber": 37,
+      "section": "E",
+      "maxMarks": 5,
+      "topic": "Computer Networking Case Study",
+      "type": "networking_case_study",
+      "questionText": "Sanjeevani is setting up a new University in Amritsar with four blocks: ADMIN (25 computers), ACADEMIC (600 computers), HOSTEL (120 computers), SPORTS (50 computers).\nDistances: Admin-Academic: 60m, Admin-Hostel: 160m, Admin-Sports: 80m, Academic-Hostel: 40m, Academic-Sports: 120m, Hostel-Sports: 150m.\n(i) Suggest the most appropriate location of the server inside Amritsar campus. Justify your choice.\n(ii) Draw/specify the cable layout to efficiently connect various blocks.\n(iii) Name any two wired media to connect computers of a block.\n(iv) Which communication medium is used by FM (Radio Waves, Micro Waves, Infrared Waves) ?\n(v) (a) Write full name of protocol used for audio-visual communication over internet.\n    OR\n    (b) Where should repeater be installed to boost signal ? Justify.",
+      "modelAnswer": "(i) Server Location: ACADEMIC Block. Justification: According to the 80-20 rule, the server should be installed in the block having the maximum number of computers (600 computers) to minimize network traffic.\n(ii) Cable Layout: Star topology connected from ACADEMIC Block (Academic to Admin: 60m, Academic to Hostel: 40m, Academic to Sports: 120m, Total cable = 220m) OR Bus/Tree topology: Hostel - Academic - Admin - Sports (40m + 60m + 80m = 180m).\n(iii) Wired Media: Twisted pair cable (CAT 5 / CAT 6 / UTP / STP) and Coaxial cable (or Optical Fiber Cable).\n(iv) (A) Radio Waves.\n(v) (a) VoIP (Voice over Internet Protocol)\n    [OR (b) Repeater should be placed between blocks where distance exceeds 100 meters, e.g. between Admin and Hostel (160m) or Academic and Sports (120m), because Ethernet signals degrade beyond 100m.]",
+      "acceptedAlternatives": [
+        "(i) Academic block (most computers / 600 systems)",
+        "(ii) Star topology with Academic as hub OR Bus/Tree topology",
+        "(iii) Twisted pair, Coaxial cable, Fiber optic cable, Ethernet cable",
+        "(iv) (A) Radio Waves",
+        "(v-a) VoIP / Voice over Internet Protocol",
+        "(v-b) Between Admin and Hostel or Academic and Sports (distance > 100m)"
+      ],
+      "criteria": [
+        {
+          "step": "(i) Server placement and justification (80-20 rule)",
+          "marks": 1,
+          "description": "Academic Block because it contains maximum computers (600)"
+        },
+        {
+          "step": "(ii) Optimal cable layout specification",
+          "marks": 1,
+          "description": "Star topology centered at Academic OR Bus/Tree connecting blocks with shortest total cable"
+        },
+        {
+          "step": "(iii) Identification of two wired transmission media",
+          "marks": 1,
+          "description": "Names two: Twisted pair cable (UTP/STP/CAT6), Coaxial cable, or Fiber optic cable"
+        },
+        {
+          "step": "(iv) FM medium selection",
+          "marks": 1,
+          "description": "(A) Radio Waves"
+        },
+        {
+          "step": "(v) VoIP protocol OR Repeater placement (>100m)",
+          "marks": 1,
+          "description": "VoIP (Voice over Internet Protocol) OR Repeater between Admin-Hostel / Academic-Sports with >100m justification"
+        }
+      ],
+      "explanation": "Server belongs where device density is highest. Repeater is needed when cable distance exceeds 100m to amplify signals. FM transmission uses Radio Waves.",
+      "reviewFlags": {
+        "allowSemanticMatch": true
+      }
+    }
+  ]
+}
