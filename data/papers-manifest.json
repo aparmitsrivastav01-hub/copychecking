@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-11-07T07:46:52.113Z",
+  "sourceDirectory": "C:\\Users\\C RR COMPUTERS\\Desktop\\Computer Science Notes\\lecs1dd",
+  "indexedCount": 1,
+  "questionPaperCount": 1,
+  "warningCount": 1,
+  "unreadableCount": 0,
+  "papers": [
+    {
+      "id": "ed16a19e78a58ae17814",
+      "title": "Computer Science Question Paper · Q.P. Code 91 · Set 4",
+      "filename": "Computer_Science.pdf",
+      "relativePath": "Computer_Science.pdf",
+      "sourcePath": "C:\\Users\\C RR COMPUTERS\\Desktop\\Computer Science Notes\\lecs1dd\\Computer_Science.pdf",
+      "format": "pdf",
+      "mimeType": "application/pdf",
+      "kind": "question_paper",
+      "subject": "Computer Science",
+      "grade": 12,
+      "paperType": "Question paper",
+      "year": null,
+      "academicSession": null,
+      "maximumMarks": 70,
+      "durationMinutes": 180,
+      "pageCount": 32,
+      "readWarnings": [
+        "Text extracted with Poppler warnings about malformed or incomplete PDF streams."
+      ],
+      "previewText": "Series : QR1SP SET-4 -  Q.P. Code 91  .  -   -  Roll No. -     Candidates must write the Q.P. Code {} on the title page of the answer-book.  : NOTE : (I)       -    (I) Please check that this question 32   paper contains 32 printed pages. (II) -        - (II) Q.P. Code given on the right hand    -  -  side of the question paper should be written on the title page of the   answer-book by the candidate. (III)       -  37    (III) Please check that this question paper contains 37 questions. (IV)         , (IV) Please write down the serial -        number of the question in the answer-book at the given place    before attempting it. (V)  -     15    (V) 15 minute time has been allotted     -     to read this question paper. The question paper will be distributed 10.15     10.15   10.30 at 10.15 a.m. From 10.15 a.m. to     -     10.30 a.m., the candidates will     -     read the question paper only and   will not write any answer on the answer-book during this period.   COMPUTER SCIENCE   : 3    : 70 Time allowed : 3 hours Maximum Marks : 70 91* 2334 1 * Page P.T.O.   : (i)  -  37    (ii)  ",
+      "metadata": {
+        "title": "Microsoft Word - 2334_91_Computer Science",
+        "author": "admin",
+        "createdAt": "2026-02-10T13:17:02.000Z",
+        "modifiedAt": "2026-03-25T06:08:26.000Z"
+      },
+      "indexedAt": "2026-11-07T07:46:52.112Z",
+      "sizeBytes": 1495659
+    }
+  ],
+  "unreadableFiles": []
+}
