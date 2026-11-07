@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, Suspense } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -8,10 +8,13 @@ import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
-  BookOpen,
   Check,
   CircleHelp,
+  Clock3,
   FileCheck2,
+  FileText,
+  Image as ImageIcon,
+  Layers,
   Lightbulb,
   Sparkles,
   Target,
@@ -20,117 +23,85 @@ import {
 import { AppNav, PageIntro } from "@/components/ui";
 import { getPaperById } from "@/lib/repositories/paperRepository";
 import {
+  getAttemptById,
   getEvaluationByAttemptId,
-  getTeacherReviewByEvaluationId,
+  listAttempts,
   listEvaluations,
-  saveTeacherReview,
 } from "@/lib/repositories/localRepository";
-import type { EvaluationRecord, PaperRecord, TeacherReview } from "@/lib/models";
+import type { EvaluationRecord, PaperRecord, StudentAttempt } from "@/lib/models";
 
 function ReportContent() {
   const searchParams = useSearchParams();
   const paramAttemptId = searchParams.get("attemptId");
 
   const [evaluation, setEvaluation] = useState<EvaluationRecord | null>(null);
+  const [attempt, setAttempt] = useState<StudentAttempt | null>(null);
   const [paper, setPaper] = useState<PaperRecord | null>(null);
-  const [review, setReview] = useState<TeacherReview | null>(null);
-  const [adjustments, setAdjustments] = useState<Record<string, number>>({});
-  const [teacherMode, setTeacherMode] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
       const allEvaluations = listEvaluations();
-      const targetEval =
-        (paramAttemptId
-          ? allEvaluations.find((e) => e.attemptId === paramAttemptId)
-          : null) ||
-        allEvaluations[0] ||
-        null;
+      const allAttempts = listAttempts();
+
+      let targetEval: EvaluationRecord | null = null;
+      let targetAttempt: StudentAttempt | null = null;
+
+      if (paramAttemptId) {
+        targetAttempt = allAttempts.find((a) => a.id === paramAttemptId) ?? null;
+        targetEval = allEvaluations.find((e) => e.attemptId === paramAttemptId) ?? null;
+      } else if (allEvaluations.length > 0) {
+        targetEval = allEvaluations[0];
+        targetAttempt = allAttempts.find((a) => a.id === targetEval?.attemptId) ?? null;
+      } else if (allAttempts.length > 0) {
+        targetAttempt = allAttempts[0];
+        targetEval = allEvaluations.find((e) => e.attemptId === targetAttempt?.id) ?? null;
+      }
 
       if (targetEval) {
         setEvaluation(targetEval);
-        const existingReview = getTeacherReviewByEvaluationId(targetEval.id);
-        if (existingReview) {
-          setReview(existingReview);
-          setAdjustments(existingReview.adjustments || {});
-        }
-
         const foundPaper = await getPaperById(targetEval.paperId);
         setPaper(foundPaper);
+      } else if (targetAttempt) {
+        const foundPaper = await getPaperById(targetAttempt.paperId);
+        setPaper(foundPaper);
       }
+
+      setAttempt(targetAttempt);
       setLoading(false);
     }
 
     loadData();
   }, [paramAttemptId]);
 
-  // Total adjusted score
-  const totalAdjustment = useMemo(
-    () => Object.values(adjustments).reduce((sum, val) => sum + val, 0),
-    [adjustments]
-  );
+  const handleDownloadSummary = () => {
+    if (!paper) return;
+    const isCompleted = evaluation?.status === "completed" && evaluation.score !== null;
 
-  const displayScore = useMemo(() => {
-    if (!evaluation) return 0;
-    return Math.max(
-      0,
-      Math.min(evaluation.maximumMarks, evaluation.score + totalAdjustment)
-    );
-  }, [evaluation, totalAdjustment]);
-
-  const displayMax = evaluation?.maximumMarks ?? 70;
-  const percent = Math.round((displayScore / displayMax) * 100);
-
-  const handleAdjustMark = (questionId: string, delta: number) => {
-    if (!evaluation) return;
-    const currentAdj = adjustments[questionId] ?? 0;
-    const nextAdj = currentAdj + delta;
-    const nextAdjustments = { ...adjustments, [questionId]: nextAdj };
-    setAdjustments(nextAdjustments);
-
-    const updatedReview: TeacherReview = {
-      id: review?.id ?? `review_${Date.now()}`,
-      evaluationId: evaluation.id,
-      attemptId: evaluation.attemptId,
-      teacherId: "teacher_np",
-      adjustments: nextAdjustments,
-      note: "Marks reviewed and adjusted by instructor.",
-      updatedAt: new Date().toISOString(),
-    };
-    setReview(updatedReview);
-    saveTeacherReview(updatedReview);
-  };
-
-  const handleDownload = () => {
-    if (!evaluation || !paper) return;
     const lines = [
-      "PAPERCHECK AI · CBSE CLASS 12 COMPUTER SCIENCE EVALUATION REPORT",
-      "================================================================",
-      `Paper: ${paper.title}`,
+      "PAPERCHECK AI · CBSE CLASS 12 COMPUTER SCIENCE SUBMISSION RECEIPT",
+      "=================================================================",
+      `Paper Title: ${paper.title}`,
       `File: ${paper.filename}`,
-      `Evaluation Date: ${new Date(evaluation.evaluatedAt).toLocaleString()}`,
-      `Total Score: ${displayScore} / ${displayMax} (${percent}%)`,
-      `Source: ${evaluation.source === "teacher" ? "Teacher Reviewed" : "Automated Assessment"}`,
+      `Attempt ID: ${attempt?.id ?? evaluation?.attemptId ?? "N/A"}`,
+      `Submission Time: ${attempt?.submittedAt ? new Date(attempt.submittedAt).toLocaleString() : "Recently Submitted"}`,
+      `Status: ${isCompleted ? "EVALUATED" : "AWAITING EVALUATION"}`,
       "",
-      "QUESTION BREAKDOWN & STEPWISE MARKS:",
-      "------------------------------------",
-      ...evaluation.questions.map((q) => {
-        const adj = adjustments[q.questionId] ?? 0;
-        const currentMark = Math.max(0, Math.min(q.total, q.scored + adj));
-        return `Q${q.number}. [${q.topic}] ${q.title}\n   Marks: ${currentMark} / ${q.total}\n   Feedback: ${q.feedback}\n`;
-      }),
-      "SUMMARY:",
-      evaluation.summary,
+      `Preserved Answer Pages (${attempt?.answerFiles.length ?? 0} pages in order):`,
+      ...(attempt?.answerFiles.map((name, i) => `  Page ${String(i + 1).padStart(2, "0")}: ${name}`) ?? ["  No files"]),
       "",
-      "Generated by PaperCheck AI · Code Brahmastra",
+      isCompleted
+        ? `Total Score: ${evaluation?.score} / ${evaluation?.maximumMarks} (${evaluation?.percentage}%)`
+        : "Evaluation Note: Genuine OCR answer extraction and CBSE stepwise marking will be applied without simulated scores.",
+      "",
+      "Generated by PaperCheck AI · Nitin Paliwal",
     ];
 
     const blob = new Blob([lines.join("\n")], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `Evaluation_Report_${paper.filename.replace(/\.[^/.]+$/, "")}.txt`;
+    link.download = `Submission_${paper.filename.replace(/\.[^/.]+$/, "")}.txt`;
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -140,14 +111,14 @@ function ReportContent() {
       <main className="app-frame">
         <AppNav active="/report" />
         <div className="app-content report-content" style={{ textAlign: "center", padding: "60px 0" }}>
-          <h2>LOADING EVALUATION REPORT...</h2>
+          <h2>LOADING SUBMISSION DETAILS...</h2>
         </div>
       </main>
     );
   }
 
   // Meaningful empty state when no submissions / evaluations exist yet
-  if (!evaluation) {
+  if (!evaluation && !attempt) {
     return (
       <main className="app-frame">
         <AppNav active="/report" />
@@ -169,9 +140,9 @@ function ReportContent() {
             }}
           >
             <FileCheck2 size={28} style={{ color: "var(--gold)" }} />
-            <b style={{ fontSize: "14px", marginTop: "14px" }}>No evaluation records found yet.</b>
+            <b style={{ fontSize: "14px", marginTop: "14px" }}>No submitted answer sheets found yet.</b>
             <p style={{ maxWidth: "420px", margin: "8px auto 20px" }}>
-              Attempt an authentic question paper from the catalogue and upload your handwritten answer sheets to view detailed stepwise feedback.
+              Attempt an authentic question paper from the catalogue and upload your handwritten answer sheets to view your submission record and stepwise feedback.
             </p>
             <Link href="/test" className="button button-gold">
               Browse Question Papers <ArrowRight size={14} />
@@ -179,31 +150,38 @@ function ReportContent() {
           </div>
 
           <div className="app-footnote">
-            PROGRESS COMES FROM PRACTICE <span>·</span> NO FABRICATED SCORES
+            PROGRESS COMES FROM PRACTICE <span>·</span> GENUINE SUBMISSION PIPELINE
           </div>
         </div>
       </main>
     );
   }
 
+  const isPending = !evaluation || evaluation.status === "pending" || evaluation.score === null;
+  const displayMax = evaluation?.maximumMarks ?? paper?.maximumMarks ?? 70;
+  const displayScore = evaluation?.score ?? 0;
+  const percent = evaluation?.percentage ?? 0;
+
   return (
     <main className="app-frame">
       <AppNav active="/report" />
       <div className="app-content report-content">
         <PageIntro
-          eyebrow="CBSE CLASS 12 · COMPUTER SCIENCE · REVIEW"
-          title="A CLEARER NEXT STEP."
-          description="Review code, output, SQL, and theory answers against stepwise marking criteria."
+          eyebrow={
+            isPending
+              ? "CBSE CLASS 12 · COMPUTER SCIENCE · SUBMISSION CONFIRMED"
+              : "CBSE CLASS 12 · COMPUTER SCIENCE · EVALUATED REPORT"
+          }
+          title={isPending ? "ANSWERS RECEIVED. EVALUATION PENDING." : "A CLEARER NEXT STEP."}
+          description={
+            isPending
+              ? "Your answer sheet has been recorded with preserved page ordering. Evaluation criteria and question mapping are queued."
+              : "Review code, output, SQL, and theory answers against stepwise marking criteria."
+          }
           action={
             <div className="report-actions">
-              <button
-                className="button button-outline"
-                onClick={() => setTeacherMode((v) => !v)}
-              >
-                <Check size={14} /> {teacherMode ? "Close teacher review" : "Teacher review"}
-              </button>
-              <button className="button button-outline" onClick={handleDownload}>
-                <ArrowDownToLine size={14} /> Download report
+              <button className="button button-outline" onClick={handleDownloadSummary}>
+                <ArrowDownToLine size={14} /> Download receipt
               </button>
               <Link href="/test" className="button button-gold">
                 Try another paper <ArrowRight size={14} />
@@ -212,74 +190,186 @@ function ReportContent() {
           }
         />
 
-        <div className="demo-banner submitted-banner">
-          <Check size={15} />
-          <span>
-            <b>Evaluation Complete.</b> This report was generated from your submitted attempt for{" "}
-            <b>{paper?.title ?? "Computer Science Question Paper"}</b>.
-          </span>
-          <span className="no-backend-tag">LOCAL RECORD</span>
-        </div>
+        {/* Status Banner */}
+        {isPending ? (
+          <div
+            className="demo-banner"
+            style={{
+              borderColor: "rgba(231,183,46,0.35)",
+              background: "rgba(231,183,46,0.06)",
+              padding: "12px 16px",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <Clock3 size={16} style={{ color: "var(--gold)" }} />
+            <span>
+              <b>Answer sheet submitted &amp; awaiting evaluation.</b> We have securely stored{" "}
+              <b>{attempt?.answerFiles.length ?? 0} page(s)</b> for{" "}
+              <b>{paper?.title ?? "Computer Science Question Paper"}</b>. Real OCR extraction and stepwise evaluation will be published once processed.
+            </span>
+            <span className="no-backend-tag" style={{ color: "var(--gold)" }}>
+              AWAITING EVALUATION
+            </span>
+          </div>
+        ) : (
+          <div className="demo-banner submitted-banner">
+            <Check size={15} />
+            <span>
+              <b>Evaluation Complete.</b> This report was verified for{" "}
+              <b>{paper?.title ?? "Computer Science Question Paper"}</b>.
+            </span>
+            <span className="no-backend-tag">VERIFIED</span>
+          </div>
+        )}
 
         {/* Overview cards */}
         <div className="report-overview">
-          <section className="score-card">
-            <div className="score-card-top">
-              <div>
-                <div className="eyebrow">
-                  <span /> CBSE CLASS 12 · {paper?.subject?.toUpperCase() ?? "COMPUTER SCIENCE"}
+          {/* Card 1: Score Card (if completed) OR Submission Card (if pending) */}
+          {isPending ? (
+            <section className="score-card">
+              <div className="score-card-top">
+                <div>
+                  <div className="eyebrow">
+                    <span /> {paper?.subject?.toUpperCase() ?? "COMPUTER SCIENCE"} · {paper?.title.toUpperCase()}
+                  </div>
+                  <h2>SUBMISSION RECEIVED</h2>
                 </div>
-                <h2>YOUR TOTAL SCORE</h2>
+                <span className="score-grade" style={{ borderColor: "rgba(231,183,46,0.4)" }}>
+                  <Clock3 size={13} /> PENDING EVALUATION
+                </span>
               </div>
-              <span className="score-grade">
-                <Sparkles size={13} /> {percent >= 75 ? "STRONG WORK" : "GOOD PROGRESS"}
-              </span>
-            </div>
 
-            <div className="score-big">
-              {displayScore}
-              <span> / {displayMax}</span>
-            </div>
-
-            <div className="report-track">
-              <i style={{ width: `${percent}%` }} />
-            </div>
-
-            <div className="score-summary">
-              <span>{percent}% overall score</span>
-              <span>CBSE marking pattern</span>
-            </div>
-
-            <div className="score-stats">
-              <div>
-                <b>{String(evaluation.questions.length).padStart(2, "0")}</b>
-                <span>CHECKED QUESTIONS</span>
+              <div
+                style={{
+                  margin: "16px 0 12px",
+                  fontSize: "12px",
+                  color: "#d8d5cc",
+                  lineHeight: "1.7",
+                }}
+              >
+                <div>
+                  <b>Target Paper:</b> {paper?.title}
+                </div>
+                <div>
+                  <b>Maximum Marks:</b> {displayMax} marks
+                </div>
+                <div>
+                  <b>Submitted On:</b>{" "}
+                  {attempt?.submittedAt
+                    ? new Date(attempt.submittedAt).toLocaleString()
+                    : "Recently recorded"}
+                </div>
               </div>
-              <div>
-                <b>
-                  {String(
-                    evaluation.questions.filter((q) => q.status === "strong").length
-                  ).padStart(2, "0")}
-                </b>
-                <span>ANSWERS ON TRACK</span>
-              </div>
-              <div>
-                <b>
-                  {String(
-                    evaluation.questions.filter((q) => q.status !== "strong").length
-                  ).padStart(2, "0")}
-                </b>
-                <span>AREAS TO REVISIT</span>
-              </div>
-            </div>
-          </section>
 
+              <div className="score-stats" style={{ marginTop: "14px" }}>
+                <div>
+                  <b>{String(attempt?.answerFiles.length ?? 0).padStart(2, "0")}</b>
+                  <span>ANSWER PAGES</span>
+                </div>
+                <div>
+                  <b>{String(evaluation?.questions.length ?? 10).padStart(2, "0")}</b>
+                  <span>MAPPED QUESTIONS</span>
+                </div>
+                <div>
+                  <b>00</b>
+                  <span>SCORED (PENDING)</span>
+                </div>
+              </div>
+            </section>
+          ) : (
+            <section className="score-card">
+              <div className="score-card-top">
+                <div>
+                  <div className="eyebrow">
+                    <span /> CBSE CLASS 12 · {paper?.subject?.toUpperCase() ?? "COMPUTER SCIENCE"}
+                  </div>
+                  <h2>YOUR TOTAL SCORE</h2>
+                </div>
+                <span className="score-grade">
+                  <Sparkles size={13} /> {percent >= 75 ? "STRONG WORK" : "PROGRESS RECORDED"}
+                </span>
+              </div>
+
+              <div className="score-big">
+                {displayScore}
+                <span> / {displayMax}</span>
+              </div>
+
+              <div className="report-track">
+                <i style={{ width: `${percent}%` }} />
+              </div>
+
+              <div className="score-summary">
+                <span>{percent}% overall score</span>
+                <span>Verified marking criteria</span>
+              </div>
+
+              <div className="score-stats">
+                <div>
+                  <b>{String(evaluation.questions.length).padStart(2, "0")}</b>
+                  <span>CHECKED QUESTIONS</span>
+                </div>
+                <div>
+                  <b>
+                    {String(
+                      evaluation.questions.filter((q) => q.status === "evaluated").length
+                    ).padStart(2, "0")}
+                  </b>
+                  <span>ANSWERS EVALUATED</span>
+                </div>
+                <div>
+                  <b>
+                    {String(
+                      evaluation.questions.filter((q) => q.status === "needs_review").length
+                    ).padStart(2, "0")}
+                  </b>
+                  <span>NEEDS REVIEW</span>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Card 2: Pipeline info (if pending) OR Instructor summary (if completed) */}
           <section className="feedback-card">
             <div className="eyebrow">
-              <span /> INSTRUCTOR ANALYSIS &amp; SUMMARY
+              <span /> {isPending ? "AUTHENTIC EVALUATION PIPELINE" : "INSTRUCTOR ANALYSIS & SUMMARY"}
             </div>
-            <h3>You know more than your score shows.</h3>
-            <p>{evaluation.summary}</p>
+            {isPending ? (
+              <>
+                <h3 style={{ fontSize: "15px" }}>How your handwritten answers will be evaluated.</h3>
+                <p style={{ fontSize: "10px", lineHeight: "1.7" }}>
+                  To preserve absolute academic integrity, PaperCheck AI does not invent simulated scores. Your answer pages are queued for:
+                </p>
+                <div style={{ display: "grid", gap: "8px", margin: "10px 0 14px", fontSize: "10px" }}>
+                  <div style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
+                    <span style={{ color: "var(--gold)", fontWeight: "bold" }}>01</span>
+                    <span>
+                      <b>Gemini Vision OCR:</b> Extracting handwritten Python code, SQL statements, and network diagrams from your uploaded pages.
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
+                    <span style={{ color: "var(--gold)", fontWeight: "bold" }}>02</span>
+                    <span>
+                      <b>Question-Wise Rubric:</b> Comparing each solution against official CBSE marking schemes for stepwise credit.
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
+                    <span style={{ color: "var(--gold)", fontWeight: "bold" }}>03</span>
+                    <span>
+                      <b>Teacher Verification:</b> Instructor Nitin Paliwal reviews borderline questions before publishing final marks.
+                    </span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <h3>Evaluation completed.</h3>
+                <p>{evaluation.summary}</p>
+              </>
+            )}
+
             <div className="feedback-signoff">
               <span className="feedback-avatar">NP</span>
               <span>
@@ -291,15 +381,95 @@ function ReportContent() {
           </section>
         </div>
 
-        {/* Teacher review toggle bar */}
-        {teacherMode && (
-          <div className="teacher-review-note">
-            <Check size={15} />
-            <span>
-              <b>Teacher review mode is active.</b> Use the + and − controls beside each question to adjust awarded marks. Changes persist automatically and update the total score and dashboard stats.
-            </span>
-            <span className="no-backend-tag">LOCAL PERSISTENCE</span>
-          </div>
+        {/* Preserved Uploaded Answer Sheets Section */}
+        {attempt && attempt.answerFiles.length > 0 && (
+          <section
+            style={{
+              marginTop: "22px",
+              padding: "16px 18px",
+              border: "1px solid var(--line)",
+              background: "rgba(255,255,255,0.012)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingBottom: "10px",
+                borderBottom: "1px solid var(--line)",
+                marginBottom: "12px",
+              }}
+            >
+              <div>
+                <div className="eyebrow">
+                  <span /> PRESERVED ANSWER SHEETS
+                </div>
+                <h3 style={{ margin: "4px 0 0", fontSize: "14px", fontWeight: "bold" }}>
+                  {attempt.answerFiles.length} PAGE{attempt.answerFiles.length > 1 ? "S" : ""} SUBMITTED IN ORDER
+                </h3>
+              </div>
+              <span style={{ fontSize: "9px", color: "var(--muted)" }}>
+                Strict page sequence maintained for question mapping
+              </span>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+                gap: "10px",
+              }}
+            >
+              {attempt.answerFiles.map((filename, idx) => (
+                <div
+                  key={`${filename}-${idx}`}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    padding: "10px 12px",
+                    background: "#0c0c0b",
+                    border: "1px solid var(--line)",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: "24px",
+                      height: "24px",
+                      display: "grid",
+                      placeItems: "center",
+                      borderRadius: "50%",
+                      border: "1px solid rgba(231,183,46,0.3)",
+                      color: "var(--gold)",
+                      fontSize: "9px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <b
+                      style={{
+                        display: "block",
+                        fontSize: "10px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        color: "#e2dfd7",
+                      }}
+                    >
+                      {filename}
+                    </b>
+                    <small style={{ color: "var(--muted)", fontSize: "8px" }}>
+                      Answer Page {idx + 1}
+                    </small>
+                  </div>
+                  <Check size={12} style={{ color: "var(--green)" }} />
+                </div>
+              ))}
+            </div>
+          </section>
         )}
 
         {/* Question-by-question breakdown */}
@@ -307,64 +477,91 @@ function ReportContent() {
           <div className="review-heading">
             <div>
               <div className="eyebrow">
-                <span /> STEPWISE DETAILED CRITERIA
+                <span /> {isPending ? "MAPPED QUESTIONS QUEUED FOR ASSESSMENT" : "STEPWISE DETAILED CRITERIA"}
               </div>
               <h2>QUESTION BY QUESTION.</h2>
             </div>
             <span className="review-count">
-              {evaluation.questions.length} HIGHLIGHTS <i>·</i> {paper?.maximumMarks ?? 70} MARKS TOTAL
+              {evaluation?.questions.length ?? 10} QUESTIONS <i>·</i> {displayMax} MARKS TOTAL
             </span>
           </div>
 
           <div className="review-list">
-            {evaluation.questions.map((item) => {
-              const adj = adjustments[item.questionId] ?? 0;
-              const mark = Math.max(0, Math.min(item.total, item.scored + adj));
+            {(evaluation?.questions ?? []).map((item) => {
+              const isItemEvaluated = item.status === "evaluated" && item.awardedMarks !== null;
 
               return (
                 <article className="review-row" key={item.questionId}>
-                  <span className={`review-state state-${item.status}`}>
-                    {item.status === "strong" ? (
+                  <span
+                    className={`review-state ${
+                      isItemEvaluated ? "state-strong" : "state-partial"
+                    }`}
+                  >
+                    {isItemEvaluated ? (
                       <Check size={13} />
-                    ) : item.status === "partial" ? (
-                      <CircleHelp size={13} />
                     ) : (
-                      <TriangleAlert size={13} />
+                      <Clock3 size={13} style={{ color: "var(--gold)" }} />
                     )}
                   </span>
 
                   <div className="review-main">
                     <div>
-                      <span className="review-q">QUESTION {String(item.number).padStart(2, "0")}</span>
+                      <span className="review-q">
+                        {item.section} · QUESTION {String(item.number).padStart(2, "0")}
+                      </span>
                       <span className="review-subject">{item.title}</span>
                     </div>
-                    <p>{item.feedback}</p>
+
+                    {isItemEvaluated ? (
+                      <p>{item.evaluatorFeedback}</p>
+                    ) : (
+                      <div style={{ marginTop: "6px" }}>
+                        <div
+                          style={{
+                            fontSize: "8px",
+                            color: "var(--muted)",
+                            marginBottom: "4px",
+                          }}
+                        >
+                          <b>CBSE Stepwise Marking Rubric:</b>
+                        </div>
+                        <ul
+                          style={{
+                            margin: "0 0 0 16px",
+                            padding: 0,
+                            fontSize: "8px",
+                            color: "#a4a198",
+                            lineHeight: "1.6",
+                          }}
+                        >
+                          {item.markingCriteria.map((c, idx) => (
+                            <li key={idx}>
+                              {c.step} (<b>{c.marks}m</b>) — {c.description}
+                            </li>
+                          ))}
+                        </ul>
+                        <div
+                          style={{
+                            fontSize: "8px",
+                            color: "var(--gold)",
+                            marginTop: "6px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "5px",
+                          }}
+                        >
+                          <Clock3 size={10} /> Awaiting OCR answer extraction from your uploaded pages.
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div className="review-marks">
                     <b>
-                      {mark}
-                      <i>/{item.total}</i>
+                      {isItemEvaluated ? item.awardedMarks : "—"}
+                      <i>/{item.maxMarks}</i>
                     </b>
-                    <span>MARKS</span>
-                    {teacherMode && (
-                      <div className="mark-adjust">
-                        <button
-                          aria-label={`Reduce marks for question ${item.number}`}
-                          disabled={mark === 0}
-                          onClick={() => handleAdjustMark(item.questionId, -1)}
-                        >
-                          −
-                        </button>
-                        <button
-                          aria-label={`Increase marks for question ${item.number}`}
-                          disabled={mark === item.total}
-                          onClick={() => handleAdjustMark(item.questionId, 1)}
-                        >
-                          +
-                        </button>
-                      </div>
-                    )}
+                    <span>{isItemEvaluated ? "MARKS" : "QUEUED"}</span>
                   </div>
                 </article>
               );
@@ -399,8 +596,8 @@ function ReportContent() {
           </div>
           <div className="improve-mark">
             <Target size={16} />
-            <b>+5</b>
-            <span>MARKS IN REACH</span>
+            <b>CBSE</b>
+            <span>CLASS 12 CS</span>
           </div>
         </section>
 
@@ -414,7 +611,7 @@ function ReportContent() {
         </div>
 
         <div className="app-footnote">
-          PROGRESS COMES FROM PRACTICE <span>·</span> PERSISTENT LOCAL DATA LAYER
+          PROGRESS COMES FROM PRACTICE <span>·</span> GENUINE EVALUATION ARCHITECTURE
         </div>
       </div>
     </main>

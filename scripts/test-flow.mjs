@@ -18,7 +18,7 @@ global.localStorage = {
 
 async function testCompleteFlow() {
   console.log("==================================================");
-  console.log("TESTING PAPERCHECK AI DATA-DRIVEN FLOW");
+  console.log("TESTING GENUINE EVALUATION & SUBMISSION FLOW");
   console.log("==================================================");
 
   // 1. Verify manifest exists and papers are discovered
@@ -32,7 +32,6 @@ async function testCompleteFlow() {
   console.log(`   Found paper: "${primaryPaper.title}"`);
   console.log(`   Format: ${primaryPaper.format}, Size: ${primaryPaper.sizeBytes} bytes`);
   console.log(`   Marks: ${primaryPaper.maximumMarks}, Duration: ${primaryPaper.durationMinutes} min`);
-  console.log(`   Year: ${primaryPaper.year ?? "Unknown"}, Session: ${primaryPaper.academicSession ?? "Unknown"}`);
   assert.strictEqual(primaryPaper.format, "pdf");
   assert.strictEqual(primaryPaper.maximumMarks, 70);
   assert.strictEqual(primaryPaper.durationMinutes, 180);
@@ -44,8 +43,8 @@ async function testCompleteFlow() {
     updateAttempt,
     submitAttempt,
     listEvaluations,
-    createAutomatedEvaluation,
-    saveTeacherReview,
+    createPendingEvaluation,
+    completeEvaluation,
     getDashboardStatistics,
     clearAllLocalData,
   } = await import("../lib/repositories/localRepository.ts");
@@ -61,7 +60,7 @@ async function testCompleteFlow() {
   assert.strictEqual(initialStats.personalBestPercent, 0, "Personal best should be 0%");
   assert.strictEqual(listAttempts().length, 0, "Attempts list should be empty");
   assert.strictEqual(listEvaluations().length, 0, "Evaluations list should be empty");
-  console.log("   ✓ Verified: No fabricated numbers exist in clean state.");
+  console.log("   ✓ Verified: Clean zero state.");
 
   // 3. Start test action
   console.log("\n3. Testing 'Start Test' Flow...");
@@ -82,65 +81,156 @@ async function testCompleteFlow() {
   assert.ok(updatedAttempt);
   assert.strictEqual(updatedAttempt.notes["1"], "False. 74 is int, 74.0 is float in Python.");
   assert.strictEqual(updatedAttempt.remainingSeconds, 175 * 60);
-  console.log("   ✓ Verified: Real-time progress and rough notes are saved persistently.");
+  console.log("   ✓ Verified: In-progress notes and timer persisted.");
 
-  // 5. Submit answers
-  console.log("\n5. Testing Answer Sheet Submission...");
+  // 5. Submit answer pages with strict ordering preserved
+  console.log("\n5. Testing Answer Sheet Submission & Page Preservation...");
   const submitted = submitAttempt(attempt.id, [
-    "page_1_section_a.jpg",
-    "page_2_section_b.jpg",
-    "page_3_section_c.jpg",
+    { name: "ans_page_1_sec_a.jpg", size: 1024000, type: "image/jpeg" },
+    { name: "ans_page_2_sec_b.jpg", size: 1056000, type: "image/jpeg" },
+    { name: "ans_page_3_sec_c_d.jpg", size: 980000, type: "image/jpeg" },
   ]);
   assert.ok(submitted);
   assert.strictEqual(submitted.status, "submitted");
   assert.strictEqual(submitted.answerFiles.length, 3);
-  console.log(`   Submitted attempt with ${submitted.answerFiles.length} answer pages.`);
+  assert.strictEqual(submitted.answerPages.length, 3);
+  assert.strictEqual(submitted.answerPages[0].pageNumber, 1);
+  assert.strictEqual(submitted.answerPages[0].fileName, "ans_page_1_sec_a.jpg");
+  assert.strictEqual(submitted.answerPages[1].pageNumber, 2);
+  assert.strictEqual(submitted.answerPages[2].pageNumber, 3);
+  console.log(`   Submitted attempt with ${submitted.answerPages.length} ordered pages.`);
+  console.log("   ✓ Verified: Uploaded pages and sequence are strictly preserved.");
 
-  // 6. Automated evaluation based on real paper criteria
-  console.log("\n6. Testing Evaluation Creation...");
-  const evaluation = createAutomatedEvaluation(submitted, primaryPaper);
-  console.log(`   Evaluation created: ${evaluation.id}`);
-  console.log(`   Score: ${evaluation.score} / ${evaluation.maximumMarks} (${evaluation.percentage}%)`);
-  assert.strictEqual(evaluation.paperId, primaryPaper.id);
-  assert.strictEqual(evaluation.maximumMarks, 70);
-  assert.ok(evaluation.score > 0 && evaluation.score <= 70);
-  assert.strictEqual(evaluation.percentage, Math.round((evaluation.score / 70) * 100));
+  // 6. Genuine Pending Evaluation (NO arbitrary/simulated scores)
+  console.log("\n6. Testing Genuine Pending Evaluation (No Fake Scores)...");
+  const pendingEval = createPendingEvaluation(submitted, primaryPaper);
+  console.log(`   Evaluation created: ${pendingEval.id}`);
+  console.log(`   Status: ${pendingEval.status}`);
+  console.log(`   Score: ${pendingEval.score}`);
+  console.log(`   Questions in queue: ${pendingEval.questions.length}`);
 
-  // 7. Verify dashboard statistics update from real data
-  console.log("\n7. Verifying Dashboard Statistics Update From Real Data...");
-  const updatedStats = getDashboardStatistics();
-  console.log("   Updated Dashboard Stats:", updatedStats);
-  assert.strictEqual(updatedStats.attempts, 1, "Attempts count should be 1");
-  assert.strictEqual(updatedStats.averageScorePercent, evaluation.percentage);
-  assert.strictEqual(updatedStats.personalBestPercent, evaluation.percentage);
-  assert.strictEqual(updatedStats.pendingEvaluations, 0);
-  console.log("   ✓ Verified: Dashboard statistics accurately reflect real evaluation records.");
+  assert.strictEqual(pendingEval.status, "pending");
+  assert.strictEqual(pendingEval.score, null, "Score must be null while evaluation is pending");
+  assert.strictEqual(pendingEval.percentage, null, "Percentage must be null while evaluation is pending");
+  assert.strictEqual(pendingEval.evaluatedAt, null, "Evaluated date must be null while pending");
+  assert.strictEqual(pendingEval.source, "pending");
+  assert.strictEqual(pendingEval.questions.length, 10, "All 10 questions mapped from CBSE paper");
+  assert.strictEqual(pendingEval.questions[0].status, "pending");
+  assert.strictEqual(pendingEval.questions[0].awardedMarks, null);
+  assert.strictEqual(pendingEval.questions[0].extractedText, null);
+  assert.ok(pendingEval.questions[0].markingCriteria.length > 0, "Marking criteria defined");
+  console.log("   ✓ Verified: Evaluation status is separated from submission status.");
+  console.log("   ✓ Verified: Absolutely no fabricated scores or marks were generated.");
 
-  // 8. Teacher review mark adjustments
-  console.log("\n8. Testing Teacher Review Adjustment Flow...");
-  const review = {
-    id: "review_test_1",
-    evaluationId: evaluation.id,
-    attemptId: submitted.id,
-    teacherId: "teacher_np",
-    adjustments: { q4: 1, q5: 1 },
-    note: "Extra partial credit awarded for query reasoning.",
-    updatedAt: new Date().toISOString(),
-  };
-  saveTeacherReview(review);
+  // 7. Verify Dashboard statistics during Pending Evaluation
+  console.log("\n7. Verifying Dashboard Statistics for Pending Evaluation...");
+  const pendingStats = getDashboardStatistics();
+  console.log("   Pending Dashboard Stats:", pendingStats);
+  assert.strictEqual(pendingStats.attempts, 1, "Attempts count should be 1 (submitted)");
+  assert.strictEqual(pendingStats.pendingEvaluations, 1, "Pending evaluations count should be 1");
+  assert.strictEqual(pendingStats.averageScorePercent, 0, "Average score must NOT count pending submissions");
+  assert.strictEqual(pendingStats.personalBestPercent, 0, "Personal best must NOT count pending submissions");
+  console.log("   ✓ Verified: Dashboard statistics accurately reflect pending evaluation.");
 
-  const finalEvaluations = listEvaluations();
-  const adjustedEval = finalEvaluations.find((e) => e.id === evaluation.id);
-  console.log(`   Adjusted score: ${adjustedEval.score} / ${adjustedEval.maximumMarks} (${adjustedEval.percentage}%)`);
-  assert.strictEqual(adjustedEval.score, evaluation.score + 2);
+  // 8. Genuine Evaluation Completion (Future Gemini Vision / Teacher Evaluator Pipeline)
+  console.log("\n8. Testing Evaluation Completion Pipeline...");
+  const completedEval = completeEvaluation(
+    pendingEval.id,
+    [
+      {
+        questionId: "q1",
+        extractedText: "False. 74 is int whereas 74.0 is floating point.",
+        awardedMarks: 1,
+        evaluatorFeedback: "Accurate distinction between int and float types.",
+        evaluatorConfidence: 0.98,
+      },
+      {
+        questionId: "q2",
+        extractedText: "The truth",
+        awardedMarks: 1,
+        evaluatorFeedback: "Correct capitalized string output.",
+        evaluatorConfidence: 0.99,
+      },
+      {
+        questionId: "q3",
+        extractedText: "(C)",
+        awardedMarks: 1,
+        evaluatorFeedback: "Correct logical expression selection.",
+        evaluatorConfidence: 1.0,
+      },
+      {
+        questionId: "q4",
+        extractedText: "('War and Peace ', 'by', ' Leo Tolstoy')",
+        awardedMarks: 1,
+        evaluatorFeedback: "Correct tuple partitioning.",
+        evaluatorConfidence: 0.97,
+      },
+      {
+        questionId: "q5",
+        extractedText: "mroPr",
+        awardedMarks: 1,
+        evaluatorFeedback: "Correct step slice result.",
+        evaluatorConfidence: 0.95,
+      },
+      {
+        questionId: "q6",
+        extractedText: "Mutable: lists. Immutable: tuples. Mutable objects can be modified in place.",
+        awardedMarks: 2,
+        evaluatorFeedback: "Valid definition and examples.",
+        evaluatorConfidence: 0.92,
+      },
+      {
+        questionId: "q7",
+        extractedText: "SELECT dept, count(*) FROM EMP GROUP BY dept;",
+        awardedMarks: 2,
+        evaluatorFeedback: "Correct grouping and aggregate count.",
+        evaluatorConfidence: 0.96,
+      },
+      {
+        questionId: "q8",
+        extractedText: "def count_words(): with open('STORY.TXT') as f: ...",
+        awardedMarks: 3,
+        evaluatorFeedback: "File handling and vowel condition implemented correctly.",
+        evaluatorConfidence: 0.91,
+      },
+      {
+        questionId: "q9",
+        extractedText: "Star topology using switch with server in Block A.",
+        awardedMarks: 3,
+        evaluatorFeedback: "Topology and layout justified based on computer density.",
+        evaluatorConfidence: 0.89,
+      },
+      {
+        questionId: "q10",
+        extractedText: "def push(s, item): s.append(item); def pop(s): if len(s)==0: return None; return s.pop()",
+        awardedMarks: 5,
+        evaluatorFeedback: "Full marks for push, pop and underflow validation.",
+        evaluatorConfidence: 0.94,
+      },
+    ],
+    "Demonstrated solid conceptual mastery across Python fundamentals, SQL aggregation, and data structure operations.",
+    "hybrid"
+  );
 
+  assert.ok(completedEval);
+  assert.strictEqual(completedEval.status, "completed");
+  assert.strictEqual(completedEval.score, 20); // sum of marks (1+1+1+1+1+2+2+3+3+5 = 20)
+  assert.strictEqual(completedEval.maximumMarks, 70);
+  assert.strictEqual(completedEval.percentage, Math.round((20 / 70) * 100)); // 29%
+  console.log(`   Completed evaluation score: ${completedEval.score} / ${completedEval.maximumMarks} (${completedEval.percentage}%)`);
+
+  // 9. Verify Dashboard statistics after genuine evaluation completion
+  console.log("\n9. Verifying Dashboard Statistics After Genuine Evaluation...");
   const finalStats = getDashboardStatistics();
-  console.log("   Final Dashboard Stats after Teacher Review:", finalStats);
-  assert.strictEqual(finalStats.averageScorePercent, adjustedEval.percentage);
-  console.log("   ✓ Verified: Teacher review updates evaluation and dashboard statistics.");
+  console.log("   Final Dashboard Stats:", finalStats);
+  assert.strictEqual(finalStats.attempts, 1);
+  assert.strictEqual(finalStats.pendingEvaluations, 0);
+  assert.strictEqual(finalStats.averageScorePercent, completedEval.percentage);
+  assert.strictEqual(finalStats.personalBestPercent, completedEval.percentage);
+  console.log("   ✓ Verified: Stats update only after genuine evaluation completion.");
 
   console.log("\n==================================================");
-  console.log("ALL DATA-DRIVEN FLOW TESTS PASSED SUCCESSFULLY!");
+  console.log("ALL GENUINE EVALUATION TESTS PASSED SUCCESSFULLY!");
   console.log("==================================================");
 }
 

@@ -1,8 +1,9 @@
 import type {
+  AnswerPage,
   DashboardStatistics,
   EvaluationRecord,
   PaperRecord,
-  QuestionMark,
+  QuestionEvaluationItem,
   StudentAttempt,
   TeacherReview,
 } from "@/lib/models";
@@ -66,6 +67,7 @@ export function startAttempt(paperId: string, durationMinutes: number | null = 1
     submittedAt: null,
     status: "in_progress",
     answerFiles: [],
+    answerPages: [],
     notes: {},
     remainingSeconds: durationSec,
   };
@@ -77,7 +79,7 @@ export function startAttempt(paperId: string, durationMinutes: number | null = 1
 
 export function updateAttempt(
   id: string,
-  changes: Partial<Pick<StudentAttempt, "notes" | "answerFiles" | "status" | "submittedAt" | "remainingSeconds">>
+  changes: Partial<Pick<StudentAttempt, "notes" | "answerFiles" | "answerPages" | "status" | "submittedAt" | "remainingSeconds">>
 ): StudentAttempt | null {
   const attempts = listAttempts();
   let updated: StudentAttempt | null = null;
@@ -96,16 +98,29 @@ export function updateAttempt(
   return updated;
 }
 
-export function submitAttempt(id: string, filenames: string[]): StudentAttempt | null {
+export function submitAttempt(
+  id: string,
+  files: Array<string | { name: string; size?: number; type?: string }>
+): StudentAttempt | null {
+  const answerFiles = files.map((f) => (typeof f === "string" ? f : f.name));
+  const answerPages: AnswerPage[] = files.map((f, index) => ({
+    pageNumber: index + 1,
+    fileName: typeof f === "string" ? f : f.name,
+    fileSize: typeof f === "string" ? undefined : f.size,
+    mimeType: typeof f === "string" ? undefined : f.type,
+    uploadedAt: new Date().toISOString(),
+  }));
+
   return updateAttempt(id, {
-    answerFiles: filenames,
+    answerFiles,
+    answerPages,
     submittedAt: new Date().toISOString(),
     status: "submitted",
   });
 }
 
 /* =========================================================================
-   Evaluation Results Repository
+   Question-wise Evaluation Results Repository
    ========================================================================= */
 
 export function listEvaluations(): EvaluationRecord[] {
@@ -124,129 +139,297 @@ export function saveEvaluation(evaluation: EvaluationRecord): void {
   const existing = listEvaluations().filter((e) => e.id !== evaluation.id);
   writeStorage(KEYS.evaluations, [evaluation, ...existing]);
 
-  // If evaluated, make sure attempt is marked evaluated
-  updateAttempt(evaluation.attemptId, { status: "evaluated" });
+  // Only transition attempt status to "evaluated" when evaluation is genuinely completed
+  if (evaluation.status === "completed" && evaluation.score !== null) {
+    updateAttempt(evaluation.attemptId, { status: "evaluated" });
+  }
 }
 
-export function createAutomatedEvaluation(
+/**
+ * Creates a genuine pending evaluation record when an answer sheet is submitted.
+ * Does NOT generate fake scores or arbitrary marks.
+ * Prepares the question structure for future Gemini Vision OCR and rubric evaluation.
+ */
+export function createPendingEvaluation(
   attempt: StudentAttempt,
   paper: PaperRecord
 ): EvaluationRecord {
   const maxMarks = paper.maximumMarks ?? 70;
-  
-  // Create structured criteria-based feedback matching Class 12 CS sections
-  const defaultQuestions: QuestionMark[] = [
+
+  // Question-wise assessment structure ready for OCR extraction and rubric evaluation
+  const questions: QuestionEvaluationItem[] = [
     {
       questionId: "q1",
       number: 1,
-      title: "Python Data Types & Syntax Analysis",
-      topic: "Python Fundamentals",
-      scored: 1,
-      total: 1,
-      status: "strong",
-      feedback: "Correct identification of Python numeric data types and float conversion.",
+      section: "SECTION A",
+      title: "State True or False: In Python, data type of 74 is same as the data type of 74.0.",
+      topic: "Python · Data Types",
+      maxMarks: 1,
+      extractedText: null,
+      extractedFromPages: [],
+      extractionConfidence: null,
+      markingCriteria: [
+        { step: "Identification of numeric types (int vs float)", marks: 1, description: "Correctly identifies False because 74 is int and 74.0 is float." },
+      ],
+      suggestedMarks: null,
+      awardedMarks: null,
+      evaluatorFeedback: null,
+      evaluatorConfidence: null,
+      status: "pending",
     },
     {
       questionId: "q2",
       number: 2,
-      title: "String Methods (capitalize & partition)",
-      topic: "String Manipulation",
-      scored: 1,
-      total: 1,
-      status: "strong",
-      feedback: "Accurate output prediction for string capitalization and tuple partitioning.",
+      section: "SECTION A",
+      title: "Identify the output: s = 'the Truth'; print(s.capitalize())",
+      topic: "Python · String Methods",
+      maxMarks: 1,
+      extractedText: null,
+      extractedFromPages: [],
+      extractionConfidence: null,
+      markingCriteria: [
+        { step: "String capitalization logic", marks: 1, description: "Outputs 'The truth' with only initial letter capitalized and remainder lowercase." },
+      ],
+      suggestedMarks: null,
+      awardedMarks: null,
+      evaluatorFeedback: null,
+      evaluatorConfidence: null,
+      status: "pending",
     },
     {
       questionId: "q3",
       number: 3,
-      title: "Dictionary Keys and Mutability",
-      topic: "Data Structures",
-      scored: 1,
-      total: 1,
-      status: "strong",
-      feedback: "Properly understood that dictionary keys must be unique and immutable.",
+      section: "SECTION A",
+      title: "Which of the following expressions evaluates to True? (A) 2>3 and 2<3 (B) 3>1 and 2 (C) 3>1 and 3>2 (D) 3>1 and 3<2",
+      topic: "Python · Logical Operators",
+      maxMarks: 1,
+      extractedText: null,
+      extractedFromPages: [],
+      extractionConfidence: null,
+      markingCriteria: [
+        { step: "Boolean operator evaluation", marks: 1, description: "Option (C) evaluates both operands to True (True and True => True)." },
+      ],
+      suggestedMarks: null,
+      awardedMarks: null,
+      evaluatorFeedback: null,
+      evaluatorConfidence: null,
+      status: "pending",
     },
     {
       questionId: "q4",
       number: 4,
-      title: "List Slicing with Negative Step",
-      topic: "List / Slice Logic",
-      scored: 1,
-      total: 2,
-      status: "partial",
-      feedback: "Step index reversed the string correctly, but missed zero-bound stop condition.",
+      section: "SECTION A",
+      title: "What is the output: s = 'War and Peace by Leo Tolstoy'; print(s.partition('by'))",
+      topic: "Python · String Partition",
+      maxMarks: 1,
+      extractedText: null,
+      extractedFromPages: [],
+      extractionConfidence: null,
+      markingCriteria: [
+        { step: "Tuple partitioning with separator", marks: 1, description: "Returns 3-tuple ('War and Peace ', 'by', ' Leo Tolstoy')." },
+      ],
+      suggestedMarks: null,
+      awardedMarks: null,
+      evaluatorFeedback: null,
+      evaluatorConfidence: null,
+      status: "pending",
     },
     {
       questionId: "q5",
       number: 5,
-      title: "SQL Aggregate Functions & GROUP BY",
-      topic: "Relational Database & SQL",
-      scored: 2,
-      total: 3,
-      status: "partial",
-      feedback: "Correct GROUP BY clause and aggregate column; filter condition should use HAVING instead of WHERE.",
+      section: "SECTION A",
+      title: "What will be the output: print('PythonProgram'[-1:2:-2])",
+      topic: "Python · Negative Slicing",
+      maxMarks: 1,
+      extractedText: null,
+      extractedFromPages: [],
+      extractionConfidence: null,
+      markingCriteria: [
+        { step: "Negative stride string slicing", marks: 1, description: "Reverses with step of 2 stopping before index 2 ('mroPr')." },
+      ],
+      suggestedMarks: null,
+      awardedMarks: null,
+      evaluatorFeedback: null,
+      evaluatorConfidence: null,
+      status: "pending",
     },
     {
       questionId: "q6",
       number: 6,
-      title: "File Handling: Text File Line Counting",
-      topic: "File Handling",
-      scored: 3,
-      total: 3,
-      status: "strong",
-      feedback: "Clean file opening using `with`, proper line strip, and condition check.",
+      section: "SECTION B",
+      title: "Difference between mutable and immutable data types in Python with examples.",
+      topic: "Python · Mutability",
+      maxMarks: 2,
+      extractedText: null,
+      extractedFromPages: [],
+      extractionConfidence: null,
+      markingCriteria: [
+        { step: "Concept definition", marks: 1, description: "Clear definition of in-place memory modification vs creating new objects." },
+        { step: "Accurate examples", marks: 1, description: "List/dict/set as mutable; int/float/string/tuple as immutable." },
+      ],
+      suggestedMarks: null,
+      awardedMarks: null,
+      evaluatorFeedback: null,
+      evaluatorConfidence: null,
+      status: "pending",
     },
     {
       questionId: "q7",
       number: 7,
-      title: "Stack Operations (Push & Pop) Implementation",
-      topic: "Data Structures",
-      scored: 4,
-      total: 5,
-      status: "partial",
-      feedback: "Push and pop functions implemented correctly; remember to handle stack underflow check when popping from empty list.",
+      section: "SECTION B",
+      title: "Write an SQL query to display department name and total employees from EMP grouped by department.",
+      topic: "SQL · Group By & Aggregation",
+      maxMarks: 2,
+      extractedText: null,
+      extractedFromPages: [],
+      extractionConfidence: null,
+      markingCriteria: [
+        { step: "SELECT department and COUNT(*)", marks: 1, description: "Correct aggregate function and projection list." },
+        { step: "GROUP BY clause", marks: 1, description: "Proper GROUP BY department syntax without syntax errors." },
+      ],
+      suggestedMarks: null,
+      awardedMarks: null,
+      evaluatorFeedback: null,
+      evaluatorConfidence: null,
+      status: "pending",
     },
     {
       questionId: "q8",
       number: 8,
-      title: "Computer Networks: Topology & Device Selection",
-      topic: "Computer Networks",
-      scored: 4,
-      total: 4,
-      status: "strong",
-      feedback: "Star topology recommended with justifiable reasoning on fault tolerance and hub/switch placement.",
+      section: "SECTION C",
+      title: "Write function count_words() to read 'STORY.TXT' and count words starting with vowel letters.",
+      topic: "File Handling · Text Files",
+      maxMarks: 3,
+      extractedText: null,
+      extractedFromPages: [],
+      extractionConfidence: null,
+      markingCriteria: [
+        { step: "File opening & safe handling", marks: 1, description: "Opens file with open() in read mode or using 'with' statement." },
+        { step: "Tokenization & word iteration", marks: 1, description: "Splits file text into words and iterates through words correctly." },
+        { step: "Vowel check & count tally", marks: 1, description: "Checks first character in lowercase/uppercase vowels and returns/prints count." },
+      ],
+      suggestedMarks: null,
+      awardedMarks: null,
+      evaluatorFeedback: null,
+      evaluatorConfidence: null,
+      status: "pending",
+    },
+    {
+      questionId: "q9",
+      number: 9,
+      section: "SECTION C",
+      title: "School campus with 4 blocks: suggest suitable cable layout and topology with minimum wire length.",
+      topic: "Networking · Case Study",
+      maxMarks: 3,
+      extractedText: null,
+      extractedFromPages: [],
+      extractionConfidence: null,
+      markingCriteria: [
+        { step: "Network topology recommendation", marks: 1, description: "Recommends star or bus topology with valid technical reasoning." },
+        { step: "Cable layout diagram / distance calculation", marks: 1, description: "Demonstrates minimum spanning tree or direct block connections based on distance." },
+        { step: "Switch / server placement justification", marks: 1, description: "Places server in block with maximum computers to reduce network latency." },
+      ],
+      suggestedMarks: null,
+      awardedMarks: null,
+      evaluatorFeedback: null,
+      evaluatorConfidence: null,
+      status: "pending",
+    },
+    {
+      questionId: "q10",
+      number: 10,
+      section: "SECTION D",
+      title: "Write Push and Pop stack functions containing Book details [BookNo, BookName]. Handle underflow.",
+      topic: "Data Structures · Stack Implementation",
+      maxMarks: 5,
+      extractedText: null,
+      extractedFromPages: [],
+      extractionConfidence: null,
+      markingCriteria: [
+        { step: "Push function logic", marks: 2, description: "Accepts stack and book record, appends item onto list." },
+        { step: "Stack underflow condition check", marks: 1, description: "Checks if len(stack) == 0 before pop." },
+        { step: "Pop operation & return value", marks: 2, description: "Pops element using .pop() and displays or returns removed book." },
+      ],
+      suggestedMarks: null,
+      awardedMarks: null,
+      evaluatorFeedback: null,
+      evaluatorConfidence: null,
+      status: "pending",
     },
   ];
-
-  const totalQuestionMax = defaultQuestions.reduce((s, q) => s + q.total, 0);
-  const totalScoredRaw = defaultQuestions.reduce((s, q) => s + q.scored, 0);
-  // Scale proportionally to match the paper's maximum marks (e.g. 70)
-  const scaledScore = Math.min(
-    maxMarks,
-    Math.round((totalScoredRaw / totalQuestionMax) * maxMarks)
-  );
-  const percentage = Math.round((scaledScore / maxMarks) * 100);
 
   const evaluation: EvaluationRecord = {
     id: `eval_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
     attemptId: attempt.id,
     paperId: paper.id,
-    score: scaledScore,
+    status: "pending",
+    score: null,
     maximumMarks: maxMarks,
-    percentage,
-    questions: defaultQuestions,
-    summary:
-      "Method is strong across Python fundamentals, file handling, and network topology. Minor marks were lost in SQL grouping conditions and stack underflow safety checks.",
-    evaluatedAt: new Date().toISOString(),
-    source: "automated",
+    percentage: null,
+    summary: null,
+    questions,
+    submittedAt: attempt.submittedAt ?? new Date().toISOString(),
+    evaluatedAt: null,
+    source: "pending",
   };
 
   saveEvaluation(evaluation);
   return evaluation;
 }
 
+/**
+ * Genuine completion of an evaluation record (for future Gemini Vision or teacher review).
+ * Calculates final score and percentage from actual question marks.
+ */
+export function completeEvaluation(
+  evaluationId: string,
+  questionUpdates: Array<{
+    questionId: string;
+    extractedText?: string;
+    awardedMarks: number;
+    evaluatorFeedback: string;
+    evaluatorConfidence?: number;
+  }>,
+  summary: string,
+  source: "gemini_vision" | "teacher" | "hybrid" = "teacher"
+): EvaluationRecord | null {
+  const evaluation = getEvaluationById(evaluationId);
+  if (!evaluation) return null;
+
+  const updateMap = new Map(questionUpdates.map((u) => [u.questionId, u]));
+  const updatedQuestions = evaluation.questions.map((q) => {
+    const update = updateMap.get(q.questionId);
+    if (!update) return q;
+    return {
+      ...q,
+      extractedText: update.extractedText ?? q.extractedText,
+      awardedMarks: Math.min(q.maxMarks, Math.max(0, update.awardedMarks)),
+      evaluatorFeedback: update.evaluatorFeedback,
+      evaluatorConfidence: update.evaluatorConfidence ?? 1.0,
+      status: "evaluated" as const,
+    };
+  });
+
+  const totalScore = updatedQuestions.reduce((sum, q) => sum + (q.awardedMarks ?? 0), 0);
+  const percentage = Math.round((totalScore / evaluation.maximumMarks) * 100);
+
+  const completedRecord: EvaluationRecord = {
+    ...evaluation,
+    status: "completed",
+    score: totalScore,
+    percentage,
+    summary,
+    questions: updatedQuestions,
+    evaluatedAt: new Date().toISOString(),
+    source,
+  };
+
+  saveEvaluation(completedRecord);
+  return completedRecord;
+}
+
 /* =========================================================================
-   Teacher Reviews Repository
+   Teacher Reviews Repository (Backend Ready)
    ========================================================================= */
 
 export function listTeacherReviews(): TeacherReview[] {
@@ -261,9 +444,8 @@ export function saveTeacherReview(review: TeacherReview): void {
   const existing = listTeacherReviews().filter((r) => r.id !== review.id);
   writeStorage(KEYS.reviews, [review, ...existing]);
 
-  // If review adjusts marks, update evaluation record score as well
   const evaluation = getEvaluationById(review.evaluationId);
-  if (evaluation) {
+  if (evaluation && evaluation.score !== null) {
     const totalAdjustment = Object.values(review.adjustments).reduce((sum, val) => sum + val, 0);
     const updatedScore = Math.max(
       0,
@@ -287,20 +469,24 @@ export function getDashboardStatistics(): DashboardStatistics {
   const attempts = listAttempts();
   const evaluations = listEvaluations();
 
-  // Completed or submitted attempts
+  // Completed submissions (submitted or awaiting evaluation or evaluated)
   const completedAttempts = attempts.filter(
-    (a) => a.status === "submitted" || a.status === "evaluated"
+    (a) => a.status === "submitted" || a.status === "awaiting_evaluation" || a.status === "evaluated"
   );
 
-  // Pending evaluation: submitted attempts that don't have an evaluation yet
-  const evaluatedAttemptIds = new Set(evaluations.map((e) => e.attemptId));
-  const pendingCount = attempts.filter(
-    (a) => a.status === "submitted" && !evaluatedAttemptIds.has(a.id)
-  ).length;
+  // Submissions genuinely pending evaluation (no evaluation record, or evaluation is pending/score is null)
+  const evaluationMap = new Map(evaluations.map((e) => [e.attemptId, e]));
+  const pendingCount = completedAttempts.filter((a) => {
+    const evalRecord = evaluationMap.get(a.id);
+    return !evalRecord || evalRecord.status !== "completed" || evalRecord.score === null;
+  }).length;
 
-  const validScores = evaluations
-    .filter((e) => e.maximumMarks > 0)
-    .map((e) => (e.score / e.maximumMarks) * 100);
+  // Real completed scores only — NO fake or pending scores counted in averages!
+  const completedEvaluations = evaluations.filter(
+    (e) => e.status === "completed" && e.score !== null && e.maximumMarks > 0
+  );
+
+  const validScores = completedEvaluations.map((e) => ((e.score ?? 0) / e.maximumMarks) * 100);
 
   return {
     attempts: completedAttempts.length,

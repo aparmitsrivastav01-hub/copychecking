@@ -32,41 +32,74 @@ export interface PaperRecord {
   indexedAt: string;
 }
 
-export type AttemptStatus = "in_progress" | "submitted" | "evaluated";
+// Student Attempt & Submission Status
+export type SubmissionStatus = "in_progress" | "submitted" | "awaiting_evaluation" | "evaluated";
+
+export interface AnswerPage {
+  pageNumber: number;
+  fileName: string;
+  fileSize?: number;
+  mimeType?: string;
+  uploadedAt: string;
+}
 
 export interface StudentAttempt {
   id: string;
   paperId: string;
   startedAt: string;
   submittedAt: string | null;
-  status: AttemptStatus;
+  status: SubmissionStatus;
   answerFiles: string[];
+  answerPages: AnswerPage[];
   notes: Record<string, string>;
   remainingSeconds?: number;
 }
 
-export interface QuestionMark {
+// Question-wise Evaluation & OCR Extraction Models
+export type EvaluationStatus = "pending" | "extracting" | "assessing" | "completed" | "failed";
+
+export interface StepwiseCriterion {
+  step: string;
+  marks: number;
+  description: string;
+}
+
+export interface QuestionEvaluationItem {
   questionId: string;
   number: number;
+  section: string;
   title: string;
   topic: string;
-  scored: number;
-  total: number;
-  status: "strong" | "partial" | "review";
-  feedback: string;
+  maxMarks: number;
+
+  // OCR Answer Extraction (Prepared for Gemini Vision)
+  extractedText: string | null;
+  extractedFromPages: number[];
+  extractionConfidence: number | null;
+
+  // Stepwise Assessment & Scoring
+  markingCriteria: StepwiseCriterion[];
+  suggestedMarks: number | null;
+  awardedMarks: number | null;
+  evaluatorFeedback: string | null;
+  evaluatorConfidence: number | null;
+  status: "pending" | "evaluated" | "needs_review";
 }
 
 export interface EvaluationRecord {
   id: string;
   attemptId: string;
   paperId: string;
-  score: number;
+  status: EvaluationStatus;
+  score: number | null;
   maximumMarks: number;
-  percentage: number;
-  questions: QuestionMark[];
-  summary: string;
-  evaluatedAt: string;
-  source: "teacher" | "automated";
+  percentage: number | null;
+  summary: string | null;
+  questions: QuestionEvaluationItem[];
+  submittedAt: string;
+  evaluatedAt: string | null;
+  evaluatorId?: string | null;
+  source: "pending" | "gemini_vision" | "teacher" | "hybrid";
 }
 
 export interface TeacherReview {

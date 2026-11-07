@@ -20,7 +20,7 @@ import { useApp } from "@/components/app-provider";
 import { AppNav, PageIntro } from "@/components/ui";
 import { getPaperById, listPapers } from "@/lib/repositories/paperRepository";
 import {
-  createAutomatedEvaluation,
+  createPendingEvaluation,
   getAttemptById,
   listAttempts,
   submitAttempt,
@@ -127,14 +127,19 @@ function UploadContent() {
     if (!files.length || submitting) return;
     setSubmitting(true);
 
+    const pageFiles = files.map((item) => ({
+      name: item.file.name,
+      size: item.file.size,
+      type: item.file.type,
+    }));
     const fileNames = files.map((item) => item.file.name);
     const activeAttemptId = attempt?.id ?? progress.currentAttemptId;
 
     if (activeAttemptId && paper) {
-      const submitted = submitAttempt(activeAttemptId, fileNames);
+      const submitted = submitAttempt(activeAttemptId, pageFiles);
       if (submitted) {
-        // Automatically generate evaluation against authentic paper criteria
-        const evaluation = createAutomatedEvaluation(submitted, paper);
+        // Record submission and initialize genuine pending evaluation (no fake scores)
+        createPendingEvaluation(submitted, paper);
 
         update({
           uploadedNames: fileNames,
