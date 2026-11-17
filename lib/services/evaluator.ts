@@ -324,32 +324,24 @@ export function evaluateSingleQuestion(
           }
         } else if (rubric.questionNumber === 28) {
           // Bus topology advantage/disadvantage OR protocol
-          if (c.step.includes('Advantage') || c.step.includes('Bus') || c.step.includes('protocol')) {
-            const hasAdv = /easy|less cable|cheap|simple|cost|inexpensive/i.test(normalizedAnswer);
-            const hasDisadv = /backbone|single point|break|fails|fault|slow|collision/i.test(normalizedAnswer);
-            const hasProtocol = /rules|standards|conventions|govern|communication/i.test(normalizedAnswer);
-            if ((hasAdv && hasDisadv) || hasProtocol) {
+          const hasAdv = /easy|less cable|cheap|simple|cost|inexpensive/i.test(normalizedAnswer);
+          const hasDisadv = /backbone|single point|break|fails|fault|slow|collision/i.test(normalizedAnswer);
+          const hasProtocol = /rules|standards|conventions|govern|communication/i.test(normalizedAnswer);
+          const hasHttp = /https?|hypertext transfer protocol/i.test(normalizedAnswer);
+
+          if (c.step.includes('Advantage')) {
+            if (hasAdv || hasProtocol) {
               stepMet = true;
-              stepFeedback = 'Provided valid networking concepts with advantage and disadvantage / definition.';
-            } else if (hasAdv || hasDisadv) {
-              stepAssessments.push({
-                step: c.step,
-                maxMarks: c.marks,
-                awardedMarks: 0.5,
-                met: true,
-                feedback: 'Stated only advantage or only disadvantage.',
-              });
-              deductionReasons.push('Omitted either the advantage or disadvantage of Bus topology.');
-              return;
+              stepFeedback = hasAdv ? 'Valid advantage of Bus topology stated.' : 'Valid definition of communication protocol provided.';
             } else {
-              stepFeedback = 'Missing advantage/disadvantage of bus topology or protocol definition.';
+              stepFeedback = 'Missing advantage of bus topology or protocol definition.';
             }
-          } else if (c.step.includes('Protocol identification') || c.step.includes('HTTP')) {
-            if (/https?|hypertext transfer protocol/i.test(normalizedAnswer)) {
+          } else if (c.step.includes('Disadvantage') || c.step.includes('Protocol identification')) {
+            if (hasDisadv || hasHttp) {
               stepMet = true;
-              stepFeedback = 'HTTP/HTTPS correctly identified.';
+              stepFeedback = hasDisadv ? 'Valid disadvantage of Bus topology stated.' : 'HTTP/HTTPS protocol correctly identified.';
             } else {
-              stepFeedback = 'HTTP/HTTPS protocol name missing.';
+              stepFeedback = 'Missing disadvantage of bus topology or HTTP protocol name.';
             }
           }
         } else {
@@ -414,8 +406,8 @@ export function evaluateSingleQuestion(
         if (!hasAlnum) deductionReasons.push("Did not use ch.isalnum() to check alphanumeric status.");
       } else if (rubric.questionNumber === 24) {
         // (i) 'RNo' in D1 and (ii) D1.setdefault('RNo', 12) or D1.clear()
-        const hasMembership = /'rno'\s+in\s+d1|d1\.keys\(\)|12\s+in\s+d1\.values\(\)/i.test(normalizedAnswer);
-        const hasSetDefaultOrClear = /setdefault\s*\(\s*'rno'\s*,\s*12\s*\)|d1\.clear\s*\(\s*\)/i.test(normalizedAnswer);
+        const hasMembership = /rno\s+in\s+d1|d1\.keys\(\)|12\s+in\s+d1\.values\(\)/i.test(normalizedAnswer) || /['"]rno['"]\s+in\s+d1/i.test(rawAnswer);
+        const hasSetDefaultOrClear = /setdefault\s*\(\s*['"]?rno['"]?\s*,\s*12\s*\)|d1\.clear\s*\(\s*\)/i.test(rawAnswer) || /setdefault\s*\(\s*rno\s*,\s*12\s*\)|d1\.clear\s*\(\s*\)/i.test(normalizedAnswer);
 
         stepAssessments.push({
           step: rubric.criteria[0].step,
@@ -479,6 +471,7 @@ export function evaluateSingleQuestion(
         if (!fix2) deductionReasons.push("Vowel check must test whether character is in vowels string.");
         if (!fix3) deductionReasons.push("Use c += 1 or c = c + 1 to increment.");
         if (!fix4) deductionReasons.push("Return value must be total count c.");
+        if (!fix1 || !fix2 || !fix3 || !fix4) improvementSuggestions.push(rubric.explanation);
       } else if (rubric.questionNumber === 29) {
         // Space.txt digit count or word filter
         const opensFile = /open\s*\(\s*['"]space\.txt['"]/i.test(rawAnswer);
@@ -853,6 +846,10 @@ export function evaluateSingleQuestion(
   // Calculate total awarded marks strictly from step criteria, capped at maxMarks
   const calculatedMarks = stepAssessments.reduce((sum, s) => sum + s.awardedMarks, 0);
   const awardedMarks = Math.min(rubric.maxMarks, Math.max(0, calculatedMarks));
+
+  if (awardedMarks < rubric.maxMarks && improvementSuggestions.length === 0 && rubric.explanation) {
+    improvementSuggestions.push(rubric.explanation);
+  }
 
   let status: 'pending' | 'evaluated' | 'needs_review' = 'evaluated';
   if (needsHumanReview) {

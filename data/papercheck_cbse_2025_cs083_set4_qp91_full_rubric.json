@@ -803,14 +803,14 @@
       ],
       "criteria": [
         {
-          "step": "Advantage and disadvantage of Bus topology OR Protocol definition",
+          "step": "Advantage of Bus topology OR Protocol definition",
           "marks": 1,
-          "description": "1 mark for one valid advantage + one disadvantage of bus topology OR 1 mark for defining protocol as rules/standards for data communication"
+          "description": "1 mark for one valid advantage of bus topology (e.g. easy to install, less cabling) OR 1 mark for defining protocol as rules/standards for data communication"
         },
         {
-          "step": "Protocol identification",
+          "step": "Disadvantage of Bus topology OR Protocol identification",
           "marks": 1,
-          "description": "1 mark for HTTP (Hypertext Transfer Protocol) or HTTPS"
+          "description": "1 mark for one valid disadvantage of bus topology (e.g. backbone cable failure breaks network) OR 1 mark for HTTP (Hypertext Transfer Protocol) / HTTPS"
         }
       ],
       "explanation": "Bus topology uses a single backbone cable. A protocol defines message formats and rules for exchange; HTTP transports HTML documents over the World Wide Web.",
