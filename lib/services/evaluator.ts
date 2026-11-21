@@ -18,6 +18,8 @@ export interface EvaluationOptions {
   paperId: string;
   submittedAt?: string;
   answers: StudentAnswerSubmission[];
+  studentName?: string;
+  studentRollNo?: string;
 }
 
 /**
@@ -970,5 +972,20 @@ export async function runFullEvaluation(options: EvaluationOptions): Promise<Eva
     source: reviewAlerts.length > 0 ? 'hybrid' : 'gemini_vision',
     sectionScores,
     reviewAlerts,
+    approvalStatus: 'pending_review',
+    approvedAt: null,
+    approvedBy: null,
+    examinerNotes: null,
+    rejectionReason: null,
+    studentName: options.studentName || 'Aarav Gupta',
+    studentRollNo: options.studentRollNo || '12498231',
+    auditLog: [
+      {
+        timestamp: new Date().toISOString(),
+        action: 'ai_evaluated',
+        author: 'PaperCheck AI Evaluator (Gemini Vision)',
+        details: `Initial evaluation generated. Scored ${totalScore}/${rubric.maximumMarks} (${percentage}%). Flagged: ${reviewAlerts.length} questions.`,
+      },
+    ],
   };
 }

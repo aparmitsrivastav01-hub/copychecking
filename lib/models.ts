@@ -33,7 +33,7 @@ export interface PaperRecord {
 }
 
 // Student Attempt & Submission Status
-export type SubmissionStatus = "in_progress" | "submitted" | "awaiting_evaluation" | "evaluated";
+export type SubmissionStatus = "in_progress" | "submitted" | "awaiting_evaluation" | "pending_review" | "evaluated";
 
 export interface AnswerPage {
   pageNumber: number;
@@ -53,10 +53,21 @@ export interface StudentAttempt {
   answerPages: AnswerPage[];
   notes: Record<string, string>;
   remainingSeconds?: number;
+  studentName?: string;
+  studentRollNo?: string;
 }
 
 // Question-wise Evaluation & OCR Extraction Models
-export type EvaluationStatus = "pending" | "extracting" | "assessing" | "completed" | "failed";
+export type EvaluationStatus =
+  | "pending"
+  | "extracting"
+  | "assessing"
+  | "pending_review"
+  | "approved"
+  | "rejected"
+  | "re_evaluation_requested"
+  | "completed"
+  | "failed";
 
 export interface StepwiseCriterion {
   step: string;
@@ -98,6 +109,22 @@ export interface QuestionEvaluationItem {
     met: boolean;
     feedback: string;
   }[];
+
+  // Examiner / Reviewer Override & Verification fields
+  examinerMarks?: number | null;
+  examinerFeedback?: string | null;
+  examinerOverrideReason?: string | null;
+  examinerApproved?: boolean;
+  flaggedForManualReview?: boolean;
+}
+
+export interface EvaluationAuditEntry {
+  timestamp: string;
+  action: "ai_evaluated" | "examiner_approved" | "marks_modified" | "rejected" | "re_evaluation_requested" | "feedback_edited";
+  author: string;
+  details: string;
+  previousMarks?: number | null;
+  newMarks?: number | null;
 }
 
 export interface EvaluationRecord {
@@ -116,6 +143,16 @@ export interface EvaluationRecord {
   source: "pending" | "gemini_vision" | "teacher" | "hybrid";
   sectionScores?: Record<string, { scored: number; total: number; percentage: number }>;
   reviewAlerts?: string[];
+
+  // Human Review, Approval & Verification Lifecycle
+  approvalStatus?: "pending_review" | "approved" | "rejected" | "draft";
+  approvedAt?: string | null;
+  approvedBy?: string | null;
+  examinerNotes?: string | null;
+  rejectionReason?: string | null;
+  auditLog?: EvaluationAuditEntry[];
+  studentName?: string;
+  studentRollNo?: string;
 }
 
 export interface TeacherReview {

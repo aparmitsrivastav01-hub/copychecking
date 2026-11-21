@@ -196,6 +196,20 @@ export function createPendingEvaluation(
     submittedAt: attempt.submittedAt ?? new Date().toISOString(),
     evaluatedAt: null,
     source: "pending",
+    approvalStatus: "pending_review",
+    approvedAt: null,
+    approvedBy: null,
+    examinerNotes: null,
+    studentName: attempt.studentName || "Aarav Gupta",
+    studentRollNo: attempt.studentRollNo || "12498231",
+    auditLog: [
+      {
+        timestamp: new Date().toISOString(),
+        action: "ai_evaluated",
+        author: "PaperCheck AI Evaluator",
+        details: "Submission queued for evaluation and examiner review.",
+      },
+    ],
   };
 
   saveEvaluation(evaluation);
@@ -247,10 +261,154 @@ export function completeEvaluation(
     questions: updatedQuestions,
     evaluatedAt: new Date().toISOString(),
     source,
+    approvalStatus: evaluation.approvalStatus || "pending_review",
   };
 
   saveEvaluation(completedRecord);
   return completedRecord;
+}
+
+/* =========================================================================
+   Examiner / Reviewer Workflow Repository
+   ========================================================================= */
+
+export function approveEvaluation(
+  evaluationId: string,
+  examinerName: string = "Nitin Paliwal",
+  examinerNotes?: string
+): EvaluationRecord | null {
+  const evaluation = getEvaluationById(evaluationId);
+  if (!evaluation) return null;
+
+  const now = new Date().toISOString();
+  // Calculate final score based on examiner overrides or awardedMarks
+  const finalScore = evaluation.questions.reduce((sum, q) => {
+    const marks = q.examinerMarks !== undefined && q.examinerMarks !== null ? q.examinerMarks : (q.awardedMarks ?? 0);
+    return sum + marks;
+  }, 0);
+  const percentage = Math.round((finalScore / evaluation.maximumMarks) * 100);
+
+  const updatedAudit = [
+    ...(evaluation.auditLog || []),
+    {
+      timestamp: now,
+      action: "examiner_approved" as const,
+      author: examinerName,
+      details: `Evaluation verified and approved by Head Examiner ${examinerName}. Final score: ${finalScore}/${evaluation.maximumMarks} (${percentage}%). Results published to student.`,
+      newMarks: finalScore,
+    },
+  ];
+
+  const approvedRecord: EvaluationRecord = {
+    ...evaluation,
+    score: finalScore,
+    percentage,
+    status: "approved",
+    approvalStatus: "approved",
+    approvedAt: now,
+    approvedBy: examinerName,
+    examinerNotes: examinerNotes ?? evaluation.examinerNotes,
+    auditLog: updatedAudit,
+  };
+
+  saveEvaluation(approvedRecord);
+  return approvedRecord;
+}
+
+export function overrideQuestionEvaluation(
+  evaluationId: string,
+  questionId: string,
+  update: {
+    marks?: number;
+    feedback?: string;
+    reason?: string;
+    flagged?: boolean;
+  },
+  examinerName: string = "Nitin Paliwal"
+): EvaluationRecord | null {
+  const evaluation = getEvaluationById(evaluationId);
+  if (!evaluation) return null;
+
+  const now = new Date().toISOString();
+  let prevMarks: number | null = null;
+  let newMarks: number | null = null;
+
+  const updatedQuestions = evaluation.questions.map((q) => {
+    if (q.questionId === questionId) {
+      prevMarks = q.examinerMarks !== undefined && q.examinerMarks !== null ? q.examinerMarks : (q.awardedMarks ?? 0);
+      newMarks = update.marks !== undefined ? Math.max(0, Math.min(q.maxMarks, update.marks)) : prevMarks;
+      return {
+        ...q,
+        examinerMarks: newMarks,
+        examinerFeedback: update.feedback !== undefined ? update.feedback : (q.examinerFeedback ?? q.evaluatorFeedback),
+        examinerOverrideReason: update.reason !== undefined ? update.reason : q.examinerOverrideReason,
+        flaggedForManualReview: update.flagged !== undefined ? update.flagged : q.flaggedForManualReview,
+        examinerApproved: true,
+      };
+    }
+    return q;
+  });
+
+  const currentScore = updatedQuestions.reduce((sum, q) => {
+    const m = q.examinerMarks !== undefined && q.examinerMarks !== null ? q.examinerMarks : (q.awardedMarks ?? 0);
+    return sum + m;
+  }, 0);
+  const percentage = Math.round((currentScore / evaluation.maximumMarks) * 100);
+
+  const updatedAudit = [
+    ...(evaluation.auditLog || []),
+    {
+      timestamp: now,
+      action: (update.marks !== undefined ? "marks_modified" : "feedback_edited") as any,
+      author: examinerName,
+      details: `Examiner modified ${questionId}: marks ${prevMarks} -> ${newMarks}. Reason: ${update.reason || "Examiner review adjustment"}`,
+      previousMarks: prevMarks,
+      newMarks: newMarks,
+    },
+  ];
+
+  const updatedRecord: EvaluationRecord = {
+    ...evaluation,
+    score: currentScore,
+    percentage,
+    questions: updatedQuestions,
+    approvalStatus: evaluation.approvalStatus === "approved" ? "approved" : "draft",
+    auditLog: updatedAudit,
+  };
+
+  saveEvaluation(updatedRecord);
+  return updatedRecord;
+}
+
+export function rejectEvaluation(
+  evaluationId: string,
+  reason: string,
+  examinerName: string = "Nitin Paliwal"
+): EvaluationRecord | null {
+  const evaluation = getEvaluationById(evaluationId);
+  if (!evaluation) return null;
+
+  const now = new Date().toISOString();
+  const updatedAudit = [
+    ...(evaluation.auditLog || []),
+    {
+      timestamp: now,
+      action: "rejected" as const,
+      author: examinerName,
+      details: `Evaluation rejected by ${examinerName}. Reason: ${reason}`,
+    },
+  ];
+
+  const rejectedRecord: EvaluationRecord = {
+    ...evaluation,
+    status: "rejected",
+    approvalStatus: "rejected",
+    rejectionReason: reason,
+    auditLog: updatedAudit,
+  };
+
+  saveEvaluation(rejectedRecord);
+  return rejectedRecord;
 }
 
 /* =========================================================================
@@ -299,19 +457,19 @@ export function getDashboardStatistics(): DashboardStatistics {
     (a) => a.status === "submitted" || a.status === "awaiting_evaluation" || a.status === "evaluated"
   );
 
-  // Submissions genuinely pending evaluation (no evaluation record, or evaluation is pending/score is null)
+  // Submissions genuinely pending evaluation or examiner approval
   const evaluationMap = new Map(evaluations.map((e) => [e.attemptId, e]));
   const pendingCount = completedAttempts.filter((a) => {
     const evalRecord = evaluationMap.get(a.id);
-    return !evalRecord || evalRecord.status !== "completed" || evalRecord.score === null;
+    return !evalRecord || evalRecord.approvalStatus !== "approved" || evalRecord.score === null;
   }).length;
 
-  // Real completed scores only — NO fake or pending scores counted in averages!
-  const completedEvaluations = evaluations.filter(
-    (e) => e.status === "completed" && e.score !== null && e.maximumMarks > 0
+  // Real approved scores only — unapproved AI evaluations stay pending!
+  const approvedEvaluations = evaluations.filter(
+    (e) => (e.status === "approved" || e.approvalStatus === "approved") && e.score !== null && e.maximumMarks > 0
   );
 
-  const validScores = completedEvaluations.map((e) => ((e.score ?? 0) / e.maximumMarks) * 100);
+  const validScores = approvedEvaluations.map((e) => ((e.score ?? 0) / e.maximumMarks) * 100);
 
   return {
     attempts: completedAttempts.length,

@@ -57,15 +57,36 @@ function ReportContent() {
       let targetEval: EvaluationRecord | null = null;
       let targetAttempt: StudentAttempt | null = null;
 
-      if (paramAttemptId) {
-        targetAttempt = allAttempts.find((a) => a.id === paramAttemptId) ?? null;
-        targetEval = allEvaluations.find((e) => e.attemptId === paramAttemptId) ?? null;
-      } else if (allEvaluations.length > 0) {
-        targetEval = allEvaluations[0];
-        targetAttempt = allAttempts.find((a) => a.id === targetEval?.attemptId) ?? null;
-      } else if (allAttempts.length > 0) {
-        targetAttempt = allAttempts[0];
-        targetEval = allEvaluations.find((e) => e.attemptId === targetAttempt?.id) ?? null;
+      // Also check server evaluations store
+      try {
+        const res = await fetch("/api/review");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && Array.isArray(data.evaluations) && data.evaluations.length > 0) {
+            const serverEvals: EvaluationRecord[] = data.evaluations;
+            if (paramAttemptId) {
+              const found = serverEvals.find((e) => e.attemptId === paramAttemptId || e.id === paramAttemptId);
+              if (found) targetEval = found;
+            } else if (allEvaluations.length === 0) {
+              targetEval = serverEvals[0];
+            }
+          }
+        }
+      } catch (err) {
+        // Silently continue to local repository
+      }
+
+      if (!targetEval) {
+        if (paramAttemptId) {
+          targetAttempt = allAttempts.find((a) => a.id === paramAttemptId) ?? null;
+          targetEval = allEvaluations.find((e) => e.attemptId === paramAttemptId) ?? null;
+        } else if (allEvaluations.length > 0) {
+          targetEval = allEvaluations[0];
+          targetAttempt = allAttempts.find((a) => a.id === targetEval?.attemptId) ?? null;
+        } else if (allAttempts.length > 0) {
+          targetAttempt = allAttempts[0];
+          targetEval = allEvaluations.find((e) => e.attemptId === targetAttempt?.id) ?? null;
+        }
       }
 
       if (targetEval) {
@@ -344,7 +365,9 @@ function ReportContent() {
     );
   }
 
+  const isApproved = evaluation && (evaluation.approvalStatus === "approved" || evaluation.status === "approved");
   const isPending = !evaluation || evaluation.status === "pending" || evaluation.score === null;
+  const isUnderReview = !isPending && !isApproved;
   const displayMax = evaluation?.maximumMarks ?? paper?.maximumMarks ?? 70;
   const displayScore = evaluation?.score ?? 0;
   const percent = evaluation?.percentage ?? 0;
@@ -357,13 +380,23 @@ function ReportContent() {
           eyebrow={
             isPending
               ? "CBSE CLASS 12 · COMPUTER SCIENCE · SUBMISSION CONFIRMED"
-              : "CBSE CLASS 12 · COMPUTER SCIENCE · OFFICIAL MARKING REPORT"
+              : isUnderReview
+              ? "CBSE CLASS 12 · COMPUTER SCIENCE · EXAMINER VERIFICATION QUEUE"
+              : "CBSE CLASS 12 · COMPUTER SCIENCE · CERTIFIED MARKING REPORT"
           }
-          title={isPending ? "ANSWERS RECEIVED. EVALUATION QUEUED." : "TEACHER-GRADE REPORT."}
+          title={
+            isPending
+              ? "ANSWERS RECEIVED. EVALUATION QUEUED."
+              : isUnderReview
+              ? "ANSWER SHEET UNDER EXAMINER REVIEW."
+              : "TEACHER-GRADE REPORT."
+          }
           description={
             isPending
               ? "Your answer sheets are preserved in order. Trigger evaluation against the official CBSE 2025 QP 91 rubric."
-              : "Official CBSE Class 12 Computer Science (083) QP 91 stepwise assessment, deduction breakdown and suggestions."
+              : isUnderReview
+              ? "Your answer sheet has been evaluated by AI and is queued for verification and official release by Head Examiner Nitin Paliwal."
+              : "Official CBSE Class 12 Computer Science (083) QP 91 certified assessment, deduction breakdown and evaluator remarks."
           }
           action={
             <div className="report-actions">
@@ -377,6 +410,15 @@ function ReportContent() {
                   <Sparkles size={14} />
                   {evaluating ? "Evaluating against CBSE Rubric..." : "Evaluate with CBSE Rubric"}
                 </button>
+              ) : isUnderReview ? (
+                <Link
+                  href="/review"
+                  className="button button-gold"
+                  style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
+                >
+                  <span>⚖ Open in Examiner Workspace</span>
+                  <ArrowRight size={14} />
+                </Link>
               ) : (
                 <button
                   className="button button-outline"
@@ -388,12 +430,16 @@ function ReportContent() {
                   {evaluating ? "Re-evaluating..." : "Re-Run Evaluation"}
                 </button>
               )}
-              <button className="button button-outline" onClick={handleDownloadSummary}>
-                <ArrowDownToLine size={14} /> Download Report
-              </button>
-              <button className="button button-outline" onClick={() => window.print()}>
-                <Printer size={14} /> Print
-              </button>
+              {isApproved && (
+                <>
+                  <button className="button button-outline" onClick={handleDownloadSummary}>
+                    <ArrowDownToLine size={14} /> Download Report
+                  </button>
+                  <button className="button button-outline" onClick={() => window.print()}>
+                    <Printer size={14} /> Print
+                  </button>
+                </>
+              )}
             </div>
           }
         />
@@ -428,16 +474,112 @@ function ReportContent() {
               {evaluating ? "Evaluating..." : "Run Evaluation Now"}
             </button>
           </div>
+        ) : isUnderReview ? (
+          /* Dedicated Lock State Banner for unapproved AI evaluations */
+          <div
+            style={{
+              marginTop: "20px",
+              padding: "32px 24px",
+              background: "rgba(231,183,46,0.04)",
+              border: "1px solid rgba(231,183,46,0.3)",
+              borderRadius: "12px",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                width: "48px",
+                height: "48px",
+                borderRadius: "50%",
+                background: "rgba(231,183,46,0.15)",
+                border: "1px solid rgba(231,183,46,0.4)",
+                color: "var(--gold)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 16px",
+                fontSize: "20px",
+              }}
+            >
+              ⚖
+            </div>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "4px 12px",
+                borderRadius: "20px",
+                background: "rgba(231,183,46,0.12)",
+                color: "var(--gold)",
+                fontSize: "11px",
+                fontFamily: "monospace",
+                marginBottom: "12px",
+              }}
+            >
+              <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--gold)" }} />
+              UNDER OFFICIAL EXAMINER REVIEW
+            </div>
+            <h3 style={{ fontSize: "18px", color: "#fff", marginBottom: "8px" }}>
+              Verification in Progress by Nitin Paliwal
+            </h3>
+            <p style={{ maxWidth: "540px", margin: "0 auto 24px", color: "var(--muted)", fontSize: "13px", lineHeight: "1.6" }}>
+              In accordance with CBSE assessment integrity protocols, AI scoring is an internal drafting tool. Official marks, percentage, and stepwise deductions are kept private until verified and signed off by Head Evaluator <b>Nitin Paliwal</b>.
+            </p>
+
+            {/* Stepper */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
+                gap: "12px",
+                maxWidth: "600px",
+                margin: "0 auto 24px",
+                textAlign: "left",
+                fontFamily: "monospace",
+                fontSize: "11px",
+              }}
+            >
+              <div style={{ padding: "10px", background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: "8px" }}>
+                <span style={{ color: "var(--green)" }}>✓ STEP 1</span>
+                <div style={{ color: "#fff", fontWeight: "bold", marginTop: "2px" }}>Submitted</div>
+              </div>
+              <div style={{ padding: "10px", background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: "8px" }}>
+                <span style={{ color: "var(--green)" }}>✓ STEP 2</span>
+                <div style={{ color: "#fff", fontWeight: "bold", marginTop: "2px" }}>AI Assessed</div>
+              </div>
+              <div style={{ padding: "10px", background: "rgba(231,183,46,0.15)", border: "1px solid var(--gold)", borderRadius: "8px" }}>
+                <span style={{ color: "var(--gold)" }}>● STEP 3</span>
+                <div style={{ color: "#fff", fontWeight: "bold", marginTop: "2px" }}>Examiner Review</div>
+              </div>
+              <div style={{ padding: "10px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", opacity: 0.5 }}>
+                <span style={{ color: "var(--muted)" }}>○ STEP 4</span>
+                <div style={{ color: "var(--muted)", fontWeight: "bold", marginTop: "2px" }}>Released</div>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "center", gap: "12px" }}>
+              <Link href="/review" className="button button-gold">
+                Go to Examiner Review Workspace <ArrowRight size={14} />
+              </Link>
+            </div>
+          </div>
         ) : (
           <div className="demo-banner submitted-banner">
             <CheckCircle2 size={16} style={{ color: "var(--green)" }} />
             <span>
-              <b>Authentic CBSE 2025 Rubric Evaluated.</b> Assessed all 37 questions across Sections A–E for{" "}
+              <b>Official Verification Endorsed by Nitin Paliwal.</b> Evaluated &amp; verified against CBSE Set 4 QP 91 standard key for{" "}
               <b>{paper?.title ?? "CBSE Class 12 Computer Science"}</b>.
             </span>
-            <span className="no-backend-tag">EVALUATED</span>
+            <span className="no-backend-tag" style={{ background: "rgba(34,197,94,0.2)", color: "var(--green)", borderColor: "rgba(34,197,94,0.4)" }}>
+              APPROVED &bull; {evaluation?.approvedBy || "Nitin Paliwal"}
+            </span>
           </div>
         )}
+
+        {/* If Under Review, do not render unapproved scores or questions */}
+        {!isUnderReview && (
+          <>
 
         {/* Human review alerts if present */}
         {evaluation?.reviewAlerts && evaluation.reviewAlerts.length > 0 && (
@@ -1085,6 +1227,8 @@ function ReportContent() {
             <span>CLASS 12 CS</span>
           </div>
         </section>
+        </>
+        )}
 
         <div className="report-next">
           <Link href="/dashboard" className="inline-link">
