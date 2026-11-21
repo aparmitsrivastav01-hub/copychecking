@@ -117,14 +117,11 @@ export function getSession(token: string | null | undefined): AuthSession | null
   if (!session) {
     // If server restarted, restore session for seeded tokens if token matches known format
     if (token.startsWith("sess_")) {
-      const parts = token.split("_");
-      const userId = parts[2] ? `usr_${parts[1]}_${parts[2]}` : null;
-      if (userId) {
-        const found = findUserById(userId);
-        if (found) {
+      for (const u of SEEDED_USERS) {
+        if (token.includes(u.id)) {
           const restored: AuthSession = {
             token,
-            user: found,
+            user: sanitizeUser(u),
             expiresAt: Date.now() + SESSION_DURATION_MS,
           };
           activeSessions.set(token, restored);
